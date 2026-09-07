@@ -107,7 +107,8 @@ export default function DealDetail() {
     )
   }
 
-  const directionsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(deal.location)}`
+  const directionsQuery = `${deal.restaurant} ${deal.location}`
+  const directionsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(directionsQuery)}`
   const showImage = deal.image_url && !imageFailed
 
   const handleGetDeal = async () => {
