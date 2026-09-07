@@ -31,8 +31,10 @@ app.add_middleware(
     CORSMiddleware,
     # Vite picks the next free port (5173, 5174, ...) when one is taken, so
     # match any local dev port rather than hardcoding one. Cloudflare Pages
-    # deployments (production + preview branches) live under *.pages.dev.
-    allow_origin_regex=r"^(http://(localhost|127\.0\.0\.1):\d+|https://[a-z0-9-]+\.pages\.dev)$",
+    # deployments live under *.pages.dev — the production one is
+    # <project>.pages.dev, but preview deploys add an extra
+    # <deployment-id>. label in front, so allow any number of subdomains.
+    allow_origin_regex=r"^(http://(localhost|127\.0\.0\.1):\d+|https://([a-z0-9-]+\.)+pages\.dev)$",
     allow_methods=["GET"],
     allow_headers=["*"],
 )
