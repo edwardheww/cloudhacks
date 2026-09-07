@@ -4,8 +4,6 @@ import { Link, useLocation } from 'react-router-dom'
 const ITEMS = [
   { label: 'Home', to: '/' },
   { label: 'Search', to: '/search' },
-  { label: 'Favorites', to: null },
-  { label: 'Profile', to: null },
 ] as const
 
 interface TopNavProps {

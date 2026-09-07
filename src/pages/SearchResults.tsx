@@ -24,7 +24,6 @@ export default function SearchResults() {
   const submittedQuery = searchParams.get('q') ?? ''
   const isBrowsing = !submittedQuery.trim()
   const [query, setQuery] = useState(submittedQuery)
-  const [favorites, setFavorites] = useState<string[]>([])
 
   const [cuisines, setCuisines] = useState<string[]>([])
   const [locations, setLocations] = useState<string[]>([])
@@ -56,7 +55,7 @@ export default function SearchResults() {
       : searchDeals(submittedQuery).then((results) =>
           results.map((result) => ({
             deal: result,
-            match: { matchPercent: result.semantic_score * 100, matchReasons: result.match_reasons },
+            match: { matchPercent: Math.min(100, result.final_score * 100), matchReasons: result.match_reasons },
           })),
         )
 
@@ -73,10 +72,6 @@ export default function SearchResults() {
       cancelled = true
     }
   }, [submittedQuery, isBrowsing])
-
-  const toggleFavorite = (id: string) => {
-    setFavorites((prev) => (prev.includes(id) ? prev.filter((f) => f !== id) : [...prev, id]))
-  }
 
   const filteredRows = useMemo(
     () => rows.filter((r) => activeCuisines.includes(r.deal.cuisine) && activeLocations.includes(r.deal.location)),
@@ -148,14 +143,7 @@ export default function SearchResults() {
         ) : filteredRows.length > 0 ? (
           <div className="grid grid-cols-[repeat(auto-fit,minmax(380px,1fr))] gap-6">
             {filteredRows.map(({ deal, match }) => (
-              <DealCard
-                key={deal.id}
-                deal={deal}
-                match={match}
-                query={submittedQuery}
-                favorited={favorites.includes(deal.id)}
-                onToggleFavorite={toggleFavorite}
-              />
+              <DealCard key={deal.id} deal={deal} match={match} query={submittedQuery} />
             ))}
           </div>
         ) : (

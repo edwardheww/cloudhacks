@@ -11,10 +11,12 @@ export interface Deal {
   promo_code: string | null
   source: string
   source_url: string
+  image_url: string | null
 }
 
 export interface SearchResult extends Deal {
   semantic_score: number
+  final_score: number
   match_reasons: string[]
 }
 
