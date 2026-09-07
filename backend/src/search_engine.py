@@ -12,7 +12,7 @@ from psycopg.rows import dict_row
 from psycopg_pool import ConnectionPool
 
 from src.embedding_service import EmbeddingService, vector_to_pgvector
-from src.query_parser import ParsedQuery, parse_query
+from src.query_parser import CUISINE_ALIASES, LOCATION_ALIASES, ParsedQuery, parse_query
 
 BACKEND_DIR = Path(__file__).resolve().parents[1]
 load_dotenv(BACKEND_DIR / ".env")
@@ -161,6 +161,7 @@ def _build_search_query(
         deals.source,
         deals.source_url,
         deals.image_url,
+        deals.raw_text,
 
         1 - (embeddings.embedding <=> %s::extensions.vector)
             AS semantic_score,
@@ -209,7 +210,72 @@ def _date_value(value):
     return None
 
 
-def _get_match_reasons(deal, parsed_query):
+# Words too generic to ever be worth surfacing as "why this matched" on
+# their own — either filler, or words that describe the search itself
+# rather than a dish (the structured cuisine/location/price/date reasons
+# already cover those angles).
+_KEYWORD_STOPWORDS = {
+    "a", "an", "the", "for", "and", "or", "with", "near", "in", "at", "of",
+    "to", "is", "are", "some", "any", "me", "im", "i", "want", "wanna",
+    "looking", "craving", "find", "get", "good", "best", "nice", "food",
+    "deal", "deals", "place", "places", "restaurant", "restaurants", "eat",
+    "eating", "hungry", "please", "cheap", "affordable", "budget", "under",
+    "below", "less", "than", "up", "max", "maximum", "today", "tomorrow",
+    "weekend", "week", "month", "this", "next", "moderate",
+}
+
+
+def _keyword_exclusions(parsed_query: ParsedQuery) -> set[str]:
+    """Words already explained by a structured reason (cuisine/location name
+    or alias) shouldn't also get a redundant keyword-match chip."""
+    exclude: set[str] = set()
+
+    if parsed_query.cuisine:
+        exclude.add(parsed_query.cuisine.casefold())
+        exclude.update(alias.casefold() for alias in CUISINE_ALIASES.get(parsed_query.cuisine, []))
+
+    if parsed_query.location:
+        exclude.add(parsed_query.location.casefold())
+        exclude.update(alias.casefold() for alias in LOCATION_ALIASES.get(parsed_query.location, []))
+
+    return exclude
+
+
+def _get_keyword_match_reason(cleaned_query: str, parsed_query: ParsedQuery, deal: dict) -> str | None:
+    """Surface a reason when a specific food/dish word from the query
+    literally appears in the deal's title or raw description.
+
+    Semantic similarity already ranks dish-level matches (e.g. "fried
+    chicken") correctly, but the structured reasons above only ever explain
+    cuisine/location/price/date — so a genuinely strong dish match showed no
+    reason at all. This closes that gap without touching the ranking itself.
+    """
+    exclude = _keyword_exclusions(parsed_query)
+
+    tokens = [
+        token
+        for token in re.findall(r"[a-z']+", cleaned_query.casefold())
+        if len(token) > 2 and token not in _KEYWORD_STOPWORDS and token not in exclude
+    ]
+
+    if not tokens:
+        return None
+
+    deal_text = " ".join(str(deal.get(field) or "") for field in ("title", "raw_text")).casefold()
+
+    # Prefer the longest matching phrase (up to 3 words) so "fried chicken"
+    # is reported as one reason rather than two separate single-word hits.
+    for size in range(min(3, len(tokens)), 0, -1):
+        for start in range(len(tokens) - size + 1):
+            phrase = " ".join(tokens[start : start + size])
+
+            if re.search(rf"(?<!\w){re.escape(phrase)}(?!\w)", deal_text):
+                return f'Matches "{phrase}"'
+
+    return None
+
+
+def _get_match_reasons(deal, parsed_query, cleaned_query: str):
     """Explain why a deal matched the user's search."""
 
     reasons = []
@@ -269,6 +335,11 @@ def _get_match_reasons(deal, parsed_query):
                     f"Available {parsed_query.date_range.label}"
                 )
 
+    # Dish/keyword-level match — the part structured reasons above can't see.
+    keyword_reason = _get_keyword_match_reason(cleaned_query, parsed_query, deal)
+    if keyword_reason:
+        reasons.append(keyword_reason)
+
     return reasons
 
 def search(query: str, limit: int = 5) -> list[dict]:
@@ -311,10 +382,11 @@ def search(query: str, limit: int = 5) -> list[dict]:
     results = []
 
     for row in rows:
-        match_reasons = _get_match_reasons(row, parsed)
+        match_reasons = _get_match_reasons(row, parsed, cleaned_query)
         result = {
             key: _json_value(value)
             for key, value in row.items()
+            if key != "raw_text"
         }
 
         result["semantic_score"] = round(
