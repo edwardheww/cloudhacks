@@ -18,6 +18,7 @@ BACKEND_DIR = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(BACKEND_DIR))
 
 from src.embedding_service import EmbeddingService, vector_to_pgvector
+from src.query_parser import ParsedQuery, parse_query
 
 load_dotenv(BACKEND_DIR / ".env")
 
@@ -35,14 +36,45 @@ SELECT
     1 - (embeddings.embedding <=> %s::extensions.vector) AS semantic_score
 FROM embeddings
 JOIN deals ON deals.id = embeddings.deal_id
+{where_clause}
 ORDER BY embeddings.embedding <=> %s::extensions.vector
 LIMIT %s;
 """
 
 
-def search(query: str, limit: int = 5) -> list[dict]:
+def build_search_query(parsed: ParsedQuery, pgvector: str, limit: int) -> tuple[str, list]:
+    clauses = []
+    parameters: list = [pgvector]
+
+    if parsed.cuisine:
+        clauses.append("LOWER(deals.cuisine) = LOWER(%s)")
+        parameters.append(parsed.cuisine)
+
+    if parsed.location:
+        clauses.append("LOWER(deals.location) LIKE LOWER(%s)")
+        parameters.append(f"%{parsed.location}%")
+
+    if parsed.price:
+        clauses.append("LOWER(deals.price) = LOWER(%s)")
+        parameters.append(parsed.price)
+
+    if parsed.date_range:
+        clauses.append(
+            "COALESCE(deals.start_date, '-infinity'::date) <= %s "
+            "AND COALESCE(deals.expiry_date, 'infinity'::date) >= %s"
+        )
+        parameters.extend([parsed.date_range.end, parsed.date_range.start])
+
+    where_clause = f"WHERE {' AND '.join(clauses)}" if clauses else ""
+    parameters.extend([pgvector, limit])
+    return SEARCH_SQL.format(where_clause=where_clause), parameters
+
+
+def search(query: str, limit: int = 5) -> tuple[ParsedQuery, list[dict]]:
+    parsed = parse_query(query)
     vector = EmbeddingService().embed([query])[0]
     pgvector = vector_to_pgvector(vector)
+    sql, parameters = build_search_query(parsed, pgvector, limit)
 
     with psycopg.connect(
         os.environ["DATABASE_URL"],
@@ -51,15 +83,17 @@ def search(query: str, limit: int = 5) -> list[dict]:
         row_factory=dict_row,
     ) as connection:
         with connection.cursor() as cursor:
-            cursor.execute(SEARCH_SQL, (pgvector, pgvector, limit))
-            return list(cursor.fetchall())
+            cursor.execute(sql, parameters)
+            return parsed, list(cursor.fetchall())
 
 
 def main() -> None:
     if len(sys.argv) < 2:
         raise SystemExit('Usage: python scripts/search_deals.py "your food query"')
 
-    results = search(" ".join(sys.argv[1:]))
+    parsed, results = search(" ".join(sys.argv[1:]))
+    reasons = ", ".join(parsed.match_reasons()) or "no explicit filters"
+    print(f"Detected filters: {reasons}")
     for result in results:
         score = float(result.pop("semantic_score"))
         print(f"{score:.1%} | {result['restaurant']} | {result['title']} | {result['location']}")
