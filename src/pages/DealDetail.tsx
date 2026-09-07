@@ -1,7 +1,6 @@
 import {
   ArrowLeftIcon,
   CalendarDaysIcon,
-  CheckIcon,
   CurrencyDollarIcon,
   MapPinIcon,
   PhotoIcon,
@@ -12,6 +11,7 @@ import { useEffect, useState } from 'react'
 import { Link, useLocation, useParams } from 'react-router-dom'
 import { getDeal, searchDeals, type Deal } from '../api/deals'
 import LoadingBurger from '../components/LoadingBurger'
+import MatchReasons from '../components/MatchReasons'
 import PillButton from '../components/PillButton'
 import Wordmark from '../components/Wordmark'
 import { capitalize, formatDateRange } from '../lib/format'
@@ -186,20 +186,7 @@ export default function DealDetail() {
               </div>
             )}
 
-            {match && (
-              <div className="flex flex-col gap-3.5">
-                <p className="text-xl font-bold text-text">Why this matched</p>
-                {match.matchReasons.map((reason) => (
-                  <div
-                    key={reason}
-                    className="flex items-center gap-2.5 rounded-[14px] bg-surface-soft px-[18px] py-3.5 text-sm"
-                  >
-                    <CheckIcon className="size-4 shrink-0 text-success" />
-                    <span className="font-medium text-text">{reason}</span>
-                  </div>
-                ))}
-              </div>
-            )}
+            {match && <MatchReasons reasons={match.matchReasons} variant="detail" />}
           </div>
 
           <div className="flex w-[420px] shrink-0 flex-col gap-5">

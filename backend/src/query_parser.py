@@ -58,6 +58,9 @@ LOCATION_ALIASES = {
     "Somerset": ["somerset"],
 }
 
+CUISINES = tuple(CUISINE_ALIASES.keys())
+LOCATIONS = tuple(LOCATION_ALIASES.keys())
+
 
 @dataclass(frozen=True)
 class DateRange:
