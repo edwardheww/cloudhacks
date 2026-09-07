@@ -160,10 +160,12 @@ export default function DealDetail() {
                 <CurrencyDollarIcon className="size-4" />
                 {capitalize(deal.price)}
               </span>
-              <span className="flex items-center gap-1.5 text-sm font-medium text-text-muted">
-                <TagIcon className="size-4" />
-                {deal.discount}
-              </span>
+              {deal.discount && (
+                <span className="flex items-center gap-1.5 text-sm font-medium text-text-muted">
+                  <TagIcon className="size-4" />
+                  {deal.discount}
+                </span>
+              )}
             </div>
 
             {deal.promo_code && (

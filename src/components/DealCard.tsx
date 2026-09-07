@@ -71,7 +71,8 @@ export default function DealCard({ deal, match, query, favorited, onToggleFavori
           <div className="flex flex-col gap-[3px]">
             <p className="text-[11px] text-text-muted">Price</p>
             <p className="text-[13px] font-semibold">
-              {capitalize(deal.price)} <span className="font-normal text-text-muted">· {deal.discount}</span>
+              {capitalize(deal.price)}
+              {deal.discount && <span className="font-normal text-text-muted"> · {deal.discount}</span>}
             </p>
           </div>
           <div className="flex flex-col gap-[3px]">

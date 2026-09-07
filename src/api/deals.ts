@@ -4,7 +4,7 @@ export interface Deal {
   title: string
   cuisine: string
   location: string
-  discount: string
+  discount: string | null
   price: string
   start_date: string
   expiry_date: string
