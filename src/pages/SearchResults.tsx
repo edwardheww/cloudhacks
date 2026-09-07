@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { getFilters, listDeals, searchDeals, type Deal } from '../api/deals'
 import DealCard from '../components/DealCard'
+import LoadingBurger from '../components/LoadingBurger'
 import MultiSelectDropdown from '../components/MultiSelectDropdown'
 import PillButton from '../components/PillButton'
 import TopNav from '../components/TopNav'
@@ -143,7 +144,7 @@ export default function SearchResults() {
             Couldn't reach the search service. Is the backend running?
           </p>
         ) : status === 'loading' ? (
-          <p className="py-16 text-center text-text-muted">Searching for deals…</p>
+          <LoadingBurger label={isBrowsing ? 'Fetching deals…' : 'Searching for deals…'} />
         ) : filteredRows.length > 0 ? (
           <div className="grid grid-cols-[repeat(auto-fit,minmax(380px,1fr))] gap-6">
             {filteredRows.map(({ deal, match }) => (
