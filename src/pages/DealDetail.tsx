@@ -11,6 +11,7 @@ import {
 import { useEffect, useState } from 'react'
 import { Link, useLocation, useParams } from 'react-router-dom'
 import { getDeal, searchDeals, type Deal } from '../api/deals'
+import LoadingBurger from '../components/LoadingBurger'
 import PillButton from '../components/PillButton'
 import Wordmark from '../components/Wordmark'
 import { capitalize, formatDateRange } from '../lib/format'
@@ -78,7 +79,7 @@ export default function DealDetail() {
   if (status === 'loading') {
     return (
       <div className="flex min-h-screen items-center justify-center bg-bg">
-        <p className="text-text-muted">Loading deal…</p>
+        <LoadingBurger label="Loading deal…" />
       </div>
     )
   }

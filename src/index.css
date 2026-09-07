@@ -89,6 +89,263 @@ body {
   }
 }
 
+/* Loading indicator: an SVG burger with three bites taken out of its edge
+   in sequence. Each bite is two overlapping, differently-sized circles
+   punched through an SVG <mask> (growing from r:0) so the chomp reads as
+   an irregular chunk rather than a neat scoop, and the three bites are
+   themselves different sizes (small nibble, big chomp, small nibble). A
+   feTurbulence/feDisplacementMap filter roughens every edge for a
+   hand-drawn feel, and a few crumbs fall away right as each bite lands.
+   All on one shared 3.6s timeline so everything stays in sync, then the
+   whole thing snaps back to whole and loops. */
+@keyframes bite-grow-1a {
+  0%,
+  9% {
+    r: 0;
+  }
+  9.1%,
+  100% {
+    r: 19;
+  }
+}
+@keyframes bite-grow-1b {
+  0%,
+  9% {
+    r: 0;
+  }
+  9.1%,
+  100% {
+    r: 12;
+  }
+}
+
+@keyframes bite-grow-2a {
+  0%,
+  42% {
+    r: 0;
+  }
+  42.1%,
+  100% {
+    r: 33;
+  }
+}
+@keyframes bite-grow-2b {
+  0%,
+  42% {
+    r: 0;
+  }
+  42.1%,
+  100% {
+    r: 19;
+  }
+}
+
+@keyframes bite-grow-3a {
+  0%,
+  75% {
+    r: 0;
+  }
+  75.1%,
+  100% {
+    r: 14;
+  }
+}
+@keyframes bite-grow-3b {
+  0%,
+  75% {
+    r: 0;
+  }
+  75.1%,
+  100% {
+    r: 9;
+  }
+}
+
+/* Each bite's grow window is ~0.1% of the cycle (a few ms) so it reads as
+   one abrupt chomp rather than growing smoothly into place. */
+.burger-bite-1a {
+  animation: bite-grow-1a 3.6s linear infinite;
+}
+.burger-bite-1b {
+  animation: bite-grow-1b 3.6s linear infinite;
+}
+.burger-bite-2a {
+  animation: bite-grow-2a 3.6s linear infinite;
+}
+.burger-bite-2b {
+  animation: bite-grow-2b 3.6s linear infinite;
+}
+.burger-bite-3a {
+  animation: bite-grow-3a 3.6s linear infinite;
+}
+.burger-bite-3b {
+  animation: bite-grow-3b 3.6s linear infinite;
+}
+
+/* One pair of crumbs falls right as each bite lands (~6%, ~39%, ~72%
+   into the shared 3.6s cycle) — keyframe selectors can't reference custom
+   properties, so each gets its own explicit keyframes. */
+@keyframes crumb-fall-1 {
+  0%,
+  6% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+  8% {
+    opacity: 1;
+    transform: translate(2px, 2px);
+  }
+  20%,
+  100% {
+    opacity: 0;
+    transform: translate(8px, 22px);
+  }
+}
+
+@keyframes crumb-fall-2 {
+  0%,
+  8% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+  10% {
+    opacity: 1;
+    transform: translate(-2px, 2px);
+  }
+  24%,
+  100% {
+    opacity: 0;
+    transform: translate(-6px, 24px);
+  }
+}
+
+@keyframes crumb-fall-3 {
+  0%,
+  39% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+  41% {
+    opacity: 1;
+    transform: translate(2px, 2px);
+  }
+  53%,
+  100% {
+    opacity: 0;
+    transform: translate(8px, 22px);
+  }
+}
+
+@keyframes crumb-fall-4 {
+  0%,
+  41% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+  43% {
+    opacity: 1;
+    transform: translate(-2px, 2px);
+  }
+  57%,
+  100% {
+    opacity: 0;
+    transform: translate(-6px, 24px);
+  }
+}
+
+@keyframes crumb-fall-5 {
+  0%,
+  72% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+  74% {
+    opacity: 1;
+    transform: translate(2px, 2px);
+  }
+  86%,
+  100% {
+    opacity: 0;
+    transform: translate(8px, 22px);
+  }
+}
+
+@keyframes crumb-fall-6 {
+  0%,
+  74% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+  76% {
+    opacity: 1;
+    transform: translate(-2px, 2px);
+  }
+  90%,
+  100% {
+    opacity: 0;
+    transform: translate(-6px, 24px);
+  }
+}
+
+.burger-crumb {
+  opacity: 0;
+}
+
+.burger-crumb-1 {
+  animation: crumb-fall-1 3.6s ease-in infinite;
+}
+
+.burger-crumb-2 {
+  animation: crumb-fall-2 3.6s ease-in infinite;
+}
+
+.burger-crumb-3 {
+  animation: crumb-fall-3 3.6s ease-in infinite;
+}
+
+.burger-crumb-4 {
+  animation: crumb-fall-4 3.6s ease-in infinite;
+}
+
+.burger-crumb-5 {
+  animation: crumb-fall-5 3.6s ease-in infinite;
+}
+
+.burger-crumb-6 {
+  animation: crumb-fall-6 3.6s ease-in infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .burger-bite-1a,
+  .burger-bite-1b,
+  .burger-bite-2a,
+  .burger-bite-2b,
+  .burger-bite-3a,
+  .burger-bite-3b,
+  .burger-crumb {
+    animation: none !important;
+  }
+
+  .burger-bite-1a {
+    r: 19 !important;
+  }
+  .burger-bite-1b {
+    r: 12 !important;
+  }
+  .burger-bite-2a {
+    r: 33 !important;
+  }
+  .burger-bite-2b {
+    r: 19 !important;
+  }
+  .burger-bite-3a {
+    r: 14 !important;
+  }
+  .burger-bite-3b {
+    r: 9 !important;
+  }
+}
+
 /* Page transitions (Home -> Search -> Deal Detail), via the browser's
    native View Transitions API — react-router's `viewTransition` prop
    triggers `document.startViewTransition` under the hood. The wordmark
