@@ -1,4 +1,4 @@
-import { MagnifyingGlassIcon } from '@heroicons/react/24/solid'
+import { MagnifyingGlassIcon, MicrophoneIcon } from '@heroicons/react/24/solid'
 import { useEffect, useMemo, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { getFilters, listDeals, searchDeals, type Deal } from '../api/deals'
@@ -8,6 +8,7 @@ import MultiSelectDropdown from '../components/MultiSelectDropdown'
 import PillButton from '../components/PillButton'
 import TopNav from '../components/TopNav'
 import Wordmark from '../components/Wordmark'
+import { useSpeechRecognition } from '../hooks/useSpeechRecognition'
 
 interface MatchInfo {
   matchPercent: number
@@ -24,6 +25,11 @@ export default function SearchResults() {
   const submittedQuery = searchParams.get('q') ?? ''
   const isBrowsing = !submittedQuery.trim()
   const [query, setQuery] = useState(submittedQuery)
+
+  const speech = useSpeechRecognition((transcript) => {
+    setQuery(transcript)
+    setSearchParams(transcript ? { q: transcript } : {})
+  })
 
   const [cuisines, setCuisines] = useState<string[]>([])
   const [locations, setLocations] = useState<string[]>([])
@@ -80,7 +86,7 @@ export default function SearchResults() {
 
   return (
     <div className="flex min-h-screen flex-col items-center bg-bg">
-      <header className="flex w-full items-center gap-10 border-b border-white/8 px-14 py-6">
+      <header className="flex w-full flex-wrap items-center gap-4 border-b border-white/8 px-4 py-4 sm:gap-10 sm:px-14 sm:py-6">
         <Link to="/" aria-label="MakanRadar home">
           <Wordmark size="header" />
         </Link>
@@ -90,7 +96,7 @@ export default function SearchResults() {
             e.preventDefault()
             setSearchParams(query ? { q: query } : {})
           }}
-          className="flex flex-1 items-center gap-10"
+          className="order-3 flex w-full flex-1 items-center gap-3 sm:order-none sm:w-auto sm:gap-10"
         >
           <div className="flex flex-1 items-center gap-2.5 rounded-full border border-white/10 bg-white/6 px-[18px] py-3">
             <MagnifyingGlassIcon className="size-3.5 text-text-muted" />
@@ -106,10 +112,26 @@ export default function SearchResults() {
           </PillButton>
         </form>
 
+        {speech.supported && (
+          <button
+            type="button"
+            onClick={() => (speech.listening ? speech.stop() : speech.start())}
+            aria-label={speech.listening ? 'Stop voice search' : 'Search by voice'}
+            aria-pressed={speech.listening}
+            className={`order-3 flex size-9 shrink-0 items-center justify-center rounded-full border transition-colors sm:order-none ${
+              speech.listening
+                ? 'animate-pulse border-accent bg-accent text-[#0f0e0d]'
+                : 'border-white/10 bg-white/6 text-text-muted hover:bg-white/10'
+            }`}
+          >
+            <MicrophoneIcon className="size-3.5" />
+          </button>
+        )}
+
         <TopNav variant="inline" />
       </header>
 
-      <main className="flex w-full max-w-[1440px] flex-1 flex-col gap-6 px-14 pt-10 pb-16">
+      <main className="flex w-full max-w-[1440px] flex-1 flex-col gap-6 px-4 pt-6 pb-16 sm:px-14 sm:pt-10">
         <div className="flex flex-wrap items-center gap-4">
           <p className="text-[22px] font-bold text-text">
             {status === 'loading'
@@ -141,7 +163,7 @@ export default function SearchResults() {
         ) : status === 'loading' ? (
           <LoadingBurger label={isBrowsing ? 'Fetching deals…' : 'Searching for deals…'} />
         ) : filteredRows.length > 0 ? (
-          <div className="grid grid-cols-[repeat(auto-fit,minmax(380px,1fr))] gap-6">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-[repeat(auto-fit,minmax(320px,1fr))]">
             {filteredRows.map(({ deal, match }) => (
               <DealCard key={deal.id} deal={deal} match={match} query={submittedQuery} />
             ))}

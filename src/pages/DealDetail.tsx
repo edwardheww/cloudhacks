@@ -124,7 +124,7 @@ export default function DealDetail() {
 
   return (
     <div className="flex min-h-screen flex-col items-center bg-bg">
-      <div className="relative flex h-[480px] w-full flex-col justify-end overflow-hidden bg-hero px-14 pb-9">
+      <div className="relative flex h-[360px] w-full flex-col justify-end overflow-hidden bg-hero px-4 pb-6 sm:h-[480px] sm:px-14 sm:pb-9">
         {showImage && (
           <img
             src={deal.image_url ?? undefined}
@@ -135,41 +135,45 @@ export default function DealDetail() {
         )}
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/25 via-black/30 to-black/90" />
 
-        <Link to="/" aria-label="MakanRadar home" className="absolute top-6 left-14">
-          <Wordmark size="header" />
-        </Link>
+        <div className="relative z-10 flex flex-col gap-3 pt-4 sm:contents">
+          <div className="flex items-center justify-between gap-3 sm:contents">
+            <Link to="/" aria-label="MakanRadar home" className="sm:absolute sm:top-6 sm:left-14">
+              <Wordmark size="header" />
+            </Link>
 
-        <Link
-          to={query.trim() ? `/search?q=${encodeURIComponent(query)}` : '/search'}
-          viewTransition
-          className="absolute top-[39px] left-[158px] flex items-center gap-1.5 rounded-full bg-black/45 px-4 py-2.5 text-[13px] font-semibold"
-        >
-          <ArrowLeftIcon className="size-3.5" />
-          Back to results
-        </Link>
-
-        {match && (
-          <div className="absolute top-8 right-14 flex items-center gap-1.5 rounded-full bg-black/45 px-4 py-2.5 text-[13px] font-semibold">
-            <SparklesIcon className="size-4 text-accent-light" />
-            {Math.round(match.matchPercent)}% overall match
+            {match && (
+              <div className="flex shrink-0 items-center gap-1.5 rounded-full bg-black/45 px-3 py-2 text-xs font-semibold sm:absolute sm:top-8 sm:right-14 sm:px-4 sm:py-2.5 sm:text-[13px]">
+                <SparklesIcon className="size-4 text-accent-light" />
+                {Math.round(match.matchPercent)}% overall match
+              </div>
+            )}
           </div>
-        )}
+
+          <Link
+            to={query.trim() ? `/search?q=${encodeURIComponent(query)}` : '/search'}
+            viewTransition
+            className="inline-flex w-fit items-center gap-1.5 rounded-full bg-black/45 px-4 py-2.5 text-[13px] font-semibold sm:absolute sm:top-[39px] sm:left-[158px]"
+          >
+            <ArrowLeftIcon className="size-3.5" />
+            Back to results
+          </Link>
+        </div>
 
         <div
-          className={`absolute inset-x-0 top-[110px] flex flex-col items-center gap-2 text-[rgba(255,255,255,0.55)] ${showImage ? 'hidden' : ''}`}
+          className={`absolute inset-x-0 top-[70px] flex flex-col items-center gap-2 text-[rgba(255,255,255,0.55)] sm:top-[110px] ${showImage ? 'hidden' : ''}`}
         >
           <PhotoIcon className="size-9 opacity-50" />
           <span className="text-sm">Food photo placeholder</span>
         </div>
 
         <div className="relative z-10 flex flex-col gap-2">
-          <h1 className="text-[44px] font-black text-text">{deal.restaurant}</h1>
-          <p className="text-lg font-semibold text-accent-light">{deal.title}</p>
+          <h1 className="text-[28px] font-black text-text sm:text-[44px]">{deal.restaurant}</h1>
+          <p className="text-base font-semibold text-accent-light sm:text-lg">{deal.title}</p>
         </div>
       </div>
 
-      <main className="flex w-full max-w-[1440px] flex-col px-14 pt-10 pb-16">
-        <div className="flex w-full gap-12">
+      <main className="flex w-full max-w-[1440px] flex-col px-4 pt-8 pb-16 sm:px-14 sm:pt-10">
+        <div className="flex w-full flex-col gap-8 lg:flex-row lg:gap-12">
           <div className="flex min-w-0 flex-1 flex-col gap-7">
             <div className="flex flex-wrap items-center gap-6">
               <span className="flex items-center gap-1.5 text-sm font-medium text-text-muted">
@@ -202,7 +206,7 @@ export default function DealDetail() {
             {match && <MatchReasons reasons={match.matchReasons} variant="detail" />}
           </div>
 
-          <div className="flex w-[420px] shrink-0 flex-col gap-5">
+          <div className="flex w-full shrink-0 flex-col gap-5 lg:w-[420px]">
             <div className="flex flex-col gap-2.5">
               <PillButton variant="primary" size="lg" className="w-full" onClick={handleGetDeal}>
                 {copied ? `Copied ${deal.promo_code}!` : deal.promo_code ? 'Get This Deal' : 'No Code Needed'}
