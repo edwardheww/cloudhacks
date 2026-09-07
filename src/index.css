@@ -1,0 +1,135 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-wordmark: "Modak", cursive;
+
+  --color-bg: #0f0e0d;
+  --color-surface: #1c1a18;
+  --color-surface-soft: #24211f;
+  --color-surface-soft-alt: #26211f;
+  --color-hero: #292624;
+
+  --color-text: #f5f2ed;
+  --color-text-dim: #bfb8b0;
+  --color-text-muted: #ada69e;
+
+  --color-accent: #ff6b40;
+  --color-accent-light: #ffa680;
+  --color-success: #8cd98c;
+
+  --color-border-soft: rgba(255, 255, 255, 0.08);
+  --color-border-strong: #423b36;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Instant per-character reveal (like a terminal typing itself out) rather
+   than a fade/transition — each letter just snaps from invisible to visible
+   at its scheduled delay. */
+@keyframes letter-type-in {
+  0%,
+  99% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes cursor-blink {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.fade-in-up {
+  opacity: 0;
+  animation: fade-in-up 520ms ease-out forwards;
+}
+
+.letter-type-in {
+  opacity: 0;
+  animation: letter-type-in 1ms linear forwards;
+}
+
+.terminal-cursor {
+  opacity: 0;
+  animation: cursor-blink 500ms steps(1) 5 forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-in-up,
+  .letter-type-in {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .terminal-cursor {
+    display: none !important;
+  }
+}
+
+/* Page transitions (Home -> Search -> Deal Detail), via the browser's
+   native View Transitions API — react-router's `viewTransition` prop
+   triggers `document.startViewTransition` under the hood. The wordmark
+   gets its own transition name so it morphs between its hero and header
+   positions/sizes instead of just crossfading in place. */
+.wordmark-transition {
+  view-transition-name: app-wordmark;
+}
+
+/* The default UA behavior crossfades old and new simultaneously, which
+   looks like a confusing double-exposure when the two pages have very
+   different layouts (e.g. Home's centered hero vs. Search's card grid).
+   Sequence it instead: old fades out fully, then new fades in. */
+@keyframes vt-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes vt-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+::view-transition-old(root) {
+  animation: vt-fade-out 180ms ease-in both;
+}
+
+::view-transition-new(root) {
+  animation: vt-fade-in 220ms ease-out 180ms both;
+}
+
+::view-transition-old(app-wordmark),
+::view-transition-new(app-wordmark) {
+  animation-duration: 420ms;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*) {
+    animation: none !important;
+  }
+}
