@@ -18,7 +18,8 @@ interface DealCardProps {
 }
 
 export default function DealCard({ deal, match, query }: DealCardProps) {
-  const directionsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(deal.location)}`
+  const directionsQuery = `${deal.restaurant} ${deal.location}`
+  const directionsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(directionsQuery)}`
   const [imageFailed, setImageFailed] = useState(false)
   const showImage = deal.image_url && !imageFailed
 
