@@ -41,7 +41,7 @@ def get_pool() -> ConnectionPool:
 
 DEAL_FIELDS = """
     id, restaurant, title, cuisine, location, discount, price,
-    start_date, expiry_date, promo_code, source, source_url
+    start_date, expiry_date, promo_code, source, source_url, image_url
 """
 
 GET_DEAL_SQL = f"SELECT {DEAL_FIELDS} FROM deals WHERE id = %s;"
@@ -159,6 +159,7 @@ def _build_search_query(
         deals.promo_code,
         deals.source,
         deals.source_url,
+        deals.image_url,
 
         1 - (embeddings.embedding <=> %s::extensions.vector)
             AS semantic_score,

@@ -32,6 +32,7 @@ export default function DealDetail() {
   const [status, setStatus] = useState<'loading' | 'ready' | 'notfound' | 'error'>('loading')
   const [match, setMatch] = useState<MatchInfo | null>(passedMatch)
   const [copied, setCopied] = useState(false)
+  const [imageFailed, setImageFailed] = useState(false)
 
   useEffect(() => {
     if (!id) return
@@ -61,7 +62,7 @@ export default function DealDetail() {
           if (cancelled) return
           const hit = results.find((r) => r.id === id)
           if (hit) {
-            setMatch({ matchPercent: hit.semantic_score * 100, matchReasons: hit.match_reasons })
+            setMatch({ matchPercent: Math.min(100, hit.final_score * 100), matchReasons: hit.match_reasons })
           }
         })
         .catch(() => {
@@ -107,6 +108,7 @@ export default function DealDetail() {
   }
 
   const directionsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(deal.location)}`
+  const showImage = deal.image_url && !imageFailed
 
   const handleGetDeal = async () => {
     if (!deal.promo_code) return
@@ -122,6 +124,14 @@ export default function DealDetail() {
   return (
     <div className="flex min-h-screen flex-col items-center bg-bg">
       <div className="relative flex h-[480px] w-full flex-col justify-end overflow-hidden bg-hero px-14 pb-9">
+        {showImage && (
+          <img
+            src={deal.image_url ?? undefined}
+            alt=""
+            className="absolute inset-0 size-full object-cover"
+            onError={() => setImageFailed(true)}
+          />
+        )}
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/25 via-black/30 to-black/90" />
 
         <Link to="/" aria-label="MakanRadar home" className="absolute top-6 left-14">
@@ -140,11 +150,13 @@ export default function DealDetail() {
         {match && (
           <div className="absolute top-8 right-14 flex items-center gap-1.5 rounded-full bg-black/45 px-4 py-2.5 text-[13px] font-semibold">
             <SparklesIcon className="size-4 text-accent-light" />
-            {Math.round(match.matchPercent)}% semantic match
+            {Math.round(match.matchPercent)}% overall match
           </div>
         )}
 
-        <div className="absolute inset-x-0 top-[110px] flex flex-col items-center gap-2 text-[rgba(255,255,255,0.55)]">
+        <div
+          className={`absolute inset-x-0 top-[110px] flex flex-col items-center gap-2 text-[rgba(255,255,255,0.55)] ${showImage ? 'hidden' : ''}`}
+        >
           <PhotoIcon className="size-9 opacity-50" />
           <span className="text-sm">Food photo placeholder</span>
         </div>

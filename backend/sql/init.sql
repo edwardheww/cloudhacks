@@ -14,6 +14,7 @@ CREATE TABLE deals (
     promo_code TEXT,
     source TEXT,
     source_url TEXT,
+    image_url TEXT,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
