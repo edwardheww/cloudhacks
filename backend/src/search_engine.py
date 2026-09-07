@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 import os
 from datetime import date, datetime
 from pathlib import Path
@@ -193,6 +194,65 @@ def _json_value(value):
 
     return value
 
+def _get_match_reasons(deal, parsed_query):
+    """Explain why a deal matched the user's search."""
+
+    reasons = []
+
+    # Cuisine
+    if parsed_query.cuisine:
+        deal_cuisine = (deal.get("cuisine") or "").casefold()
+
+        if deal_cuisine == parsed_query.cuisine.casefold():
+            reasons.append(f"{parsed_query.cuisine} cuisine")
+
+    # Location
+    if parsed_query.location:
+        deal_location = (deal.get("location") or "").casefold()
+
+        if parsed_query.location.casefold() in deal_location:
+            reasons.append(parsed_query.location)
+
+    # Price
+    if parsed_query.price:
+        deal_price = (deal.get("price") or "").casefold()
+
+        if parsed_query.price == "cheap":
+            reasons.append("Budget-friendly")
+
+        elif parsed_query.price == "moderate":
+            reasons.append("Moderate price")
+
+        elif parsed_query.price.startswith("under_"):
+            max_price = float(parsed_query.price.split("_")[1])
+
+            # Extract the first price from the deal's price field
+            price_match = re.search(
+                r"\$?\s*(\d+(?:\.\d+)?)",
+                deal_price,
+            )
+
+            if price_match:
+                actual_price = float(price_match.group(1))
+
+                if actual_price <= max_price:
+                    reasons.append(f"Under ${max_price:g}")
+
+    # Date
+    if parsed_query.date_range:
+        deal_start = deal.get("start_date")
+        deal_end = deal.get("expiry_date")
+
+        if deal_start and deal_end:
+            if (
+                deal_start <= parsed_query.date_range.end
+                and deal_end >= parsed_query.date_range.start
+            ):
+                reasons.append(
+                    f"Available {parsed_query.date_range.label}"
+                )
+
+    return reasons
 
 def search(query: str, limit: int = 5) -> list[dict]:
     """
@@ -231,12 +291,10 @@ def search(query: str, limit: int = 5) -> list[dict]:
             cursor.execute(sql, parameters)
             rows = cursor.fetchall()
 
-    # Add human-readable match reasons.
-    reasons = parsed.match_reasons()
-
     results = []
 
     for row in rows:
+        match_reasons = _get_match_reasons(row, parsed)
         result = {
             key: _json_value(value)
             for key, value in row.items()
@@ -252,7 +310,7 @@ def search(query: str, limit: int = 5) -> list[dict]:
             4,
         )
 
-        result["match_reasons"] = reasons
+        result["match_reasons"] = match_reasons
 
         results.append(result)
 

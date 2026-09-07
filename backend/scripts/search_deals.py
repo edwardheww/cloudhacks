@@ -27,7 +27,18 @@ def main() -> None:
     print(f"Detected filters: {reasons}")
     for result in results:
         score = float(result.pop("semantic_score"))
-        print(f"{score:.1%} | {result['restaurant']} | {result['title']} | {result['location']}")
+        print(
+            f"{score:.1%} | "
+            f"{result['restaurant']} | "
+            f"{result['title']} | "
+            f"{result['location']}"
+        )
+
+        if result["match_reasons"]:
+            print(
+                "   Why this matched: "
+                + ", ".join(result["match_reasons"])
+            )
 
 
 if __name__ == "__main__":
