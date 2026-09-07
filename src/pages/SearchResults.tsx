@@ -101,7 +101,7 @@ export default function SearchResults() {
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="cheap Thai food near Clementi"
+              placeholder="What are you craving?"
               className="min-w-0 flex-1 bg-transparent text-sm font-medium text-text placeholder:text-text-muted focus:outline-none"
             />
           </div>

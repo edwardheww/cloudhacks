@@ -55,7 +55,7 @@ export default function Home() {
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="cheap Thai food near Clementi"
+            placeholder="What are you craving?"
             className="min-w-0 flex-1 bg-transparent py-3 text-[15px] text-text-dim placeholder:text-text-dim focus:outline-none"
           />
           <PillButton type="submit" variant="primary">
