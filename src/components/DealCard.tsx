@@ -1,9 +1,9 @@
-import { CheckIcon, MapPinIcon, PhotoIcon, SparklesIcon } from '@heroicons/react/24/solid'
+import { MapPinIcon, PhotoIcon, SparklesIcon } from '@heroicons/react/24/solid'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import type { Deal } from '../api/deals'
 import { capitalize, formatShortDate } from '../lib/format'
-import Chip from './Chip'
+import MatchReasons from './MatchReasons'
 import PillButton from './PillButton'
 
 interface DealMatchInfo {
@@ -79,18 +79,7 @@ export default function DealCard({ deal, match, query }: DealCardProps) {
           </div>
         </div>
 
-        {match && (
-          <div className="flex flex-wrap gap-x-2 gap-y-1.5">
-            {match.matchReasons.slice(0, 3).map((reason) => (
-              <Chip key={reason} tone="success">
-                <span className="inline-flex items-center gap-1">
-                  <CheckIcon className="size-3" />
-                  {reason}
-                </span>
-              </Chip>
-            ))}
-          </div>
-        )}
+        {match && <MatchReasons reasons={match.matchReasons} />}
 
         <div className="flex w-full gap-2.5">
           <Link to={`/deal/${deal.id}`} state={{ query, match }} viewTransition className="flex-1">
