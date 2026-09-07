@@ -10,8 +10,8 @@ const LETTER_STEP_MS = 90
 export const WORDMARK_TYPE_DURATION_MS = (LETTER_COUNT - 1) * LETTER_STEP_MS + 40
 
 const SIZE_CLASSES = {
-  hero: 'text-[100px] leading-[0.82]',
-  header: 'text-[32px] leading-[0.82]',
+  hero: 'text-[56px] leading-[0.82] sm:text-[72px] md:text-[100px]',
+  header: 'text-[24px] leading-[0.82] sm:text-[32px]',
 } as const
 
 interface WordmarkProps {
