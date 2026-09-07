@@ -145,7 +145,7 @@ export default function SearchResults() {
         ) : status === 'loading' ? (
           <p className="py-16 text-center text-text-muted">Searching for deals…</p>
         ) : filteredRows.length > 0 ? (
-          <div className="flex flex-wrap gap-6">
+          <div className="grid grid-cols-[repeat(auto-fit,minmax(380px,1fr))] gap-6">
             {filteredRows.map(({ deal, match }) => (
               <DealCard
                 key={deal.id}

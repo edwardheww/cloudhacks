@@ -23,7 +23,7 @@ export default function DealCard({ deal, match, query, favorited, onToggleFavori
   const directionsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(deal.location)}`
 
   return (
-    <div className="flex w-full max-w-[440px] flex-col overflow-hidden rounded-[20px] border border-white/6 bg-surface">
+    <div className="flex w-full max-w-[560px] flex-col overflow-hidden rounded-[20px] border border-white/6 bg-surface">
       <div className="relative h-[260px] w-full bg-hero">
         <div className="absolute inset-0 bg-gradient-to-b from-black/0 to-black/75" />
 
