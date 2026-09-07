@@ -128,7 +128,7 @@ export default function DealDetail() {
         </Link>
 
         <Link
-          to="/search"
+          to={query.trim() ? `/search?q=${encodeURIComponent(query)}` : '/search'}
           viewTransition
           className="absolute top-[39px] left-[158px] flex items-center gap-1.5 rounded-full bg-black/45 px-4 py-2.5 text-[13px] font-semibold"
         >
