@@ -1,282 +1,227 @@
 [
   {
-    "id": "msg_001",
-    "raw_text": "🔥 THAI EXPRESS DEAL 🔥 20% OFF selected lunch sets at Clementi Mall! Valid until 15 Sep. Use code THAI20."
-  },
-  {
-    "id": "msg_002",
-    "raw_text": "🍜 Nakhon Kitchen weekday lunch special! Thai set only $8.90 at Buona Vista. Available 7–30 Sep."
-  },
-  {
-    "id": "msg_003",
-    "raw_text": "1-FOR-1 PAD THAI!!! Siam Kitchen at Jurong East, this weekend only 😍 Sat & Sun, 12pm–5pm. T&Cs apply."
-  },
-  {
-    "id": "msg_004",
-    "raw_text": "Students!!! Get 15% off your Thai meal at Tuk Tuk Thai, Clementi. Just show your student card. Valid till end Sept."
-  },
-  {
-    "id": "msg_005",
-    "raw_text": "🌶️ Thai food lovers — Green Basil has $6.90 lunch sets at Tiong Bahru! Weekdays only, 11.30am-2.30pm."
-  },
-  {
-    "id": "msg_006",
-    "raw_text": "Flash deal 🚨 Thai Smile @ Orchard: spend $30 and get a FREE mango sticky rice. Valid this Friday to Sunday."
-  },
-  {
-    "id": "msg_007",
-    "raw_text": "20% OFF EVERYTHING at Bangkok Street Food, Paya Lebar. Promo code BKK20. Running 10–25 September."
-  },
-  {
-    "id": "msg_008",
-    "raw_text": "Thai Basil's weekend special: 2 mains + 2 drinks for just $25.90! 📍Bugis Junction. Valid Sat/Sun."
-  },
-  {
-    "id": "msg_009",
-    "raw_text": "🍣 SUSHI DEAL 🍣 Sushi Express at Clementi — 1 for 1 salmon donburi after 6pm! Valid 8–14 Sep."
-  },
-  {
-    "id": "msg_010",
-    "raw_text": "Student promo from Sushi Tei! 10% off dine-in bills at Orchard outlet with valid student ID. Ends 20 Sep."
-  },
-  {
-    "id": "msg_011",
-    "raw_text": "Japan Food Hall @ Jurong East is doing a $9.90 ramen + gyoza set this week. Mon-Fri lunch only."
-  },
-  {
-    "id": "msg_012",
-    "raw_text": "🍜 Ramen Champion — FREE egg with every ramen ordered this weekend! Tiong Bahru outlet. No code needed."
-  },
-  {
-    "id": "msg_013",
-    "raw_text": "20% off your second sushi platter at Sakae Sushi, Paya Lebar. Valid 9–18 Sep. Use SAKAE20."
-  },
-  {
-    "id": "msg_014",
-    "raw_text": "Late night ramen 🌙 $7.90 bowls after 9pm at Menya Musashi, Bugis. Promo runs until 30 Sept."
-  },
-  {
-    "id": "msg_015",
-    "raw_text": "🍣 Weekend only: 2 salmon maki sets for $12 at Sushi Street, HarbourFront! While stocks last."
-  },
-  {
-    "id": "msg_016",
-    "raw_text": "KOREAN BBQ ALERT 🔥 Seoul Garden has 30% OFF dinner buffet at selected outlets! Clementi outlet included. Valid till 22 Sep."
-  },
-  {
-    "id": "msg_017",
-    "raw_text": "K-BBQ lunch for only $14.90 at Oppa BBQ, Jurong East. Weekdays 11am–3pm. Student ID gets another 5% off!"
-  },
-  {
-    "id": "msg_018",
-    "raw_text": "🍗 Chicken lovers! K Fry is giving FREE fries with any chicken platter this weekend. Bugis outlet only."
-  },
-  {
-    "id": "msg_019",
-    "raw_text": "15% OFF Korean mains at Kim Dae Mun, Tanjong Pagar. Quote promo KOREA15. Valid 7-21 Sep."
-  },
-  {
-    "id": "msg_020",
-    "raw_text": "Seoul Kitchen weekday deal: bibimbap + drink $10.90. Available at Paya Lebar from 8 Sep onwards."
-  },
-  {
-    "id": "msg_021",
-    "raw_text": "🥟 Dumpling lovers — 1-for-1 mandu at Hanok Restaurant this Sunday! Chinatown outlet, 5pm onwards."
-  },
-  {
-    "id": "msg_022",
-    "raw_text": "Korean fried chicken 2-for-$20 at Chicken Up, Orchard. Valid Fri-Sun only. No minimum spend."
-  },
-  {
-    "id": "msg_023",
-    "raw_text": "🇨🇳 Chinatown special! 20% off dim sum at Dragon Palace before 12pm. Weekends throughout September."
-  },
-  {
-    "id": "msg_024",
-    "raw_text": "Crystal Jade lunch promo — set meals from $12.80 at HarbourFront. Valid weekdays until 19 Sep."
-  },
-  {
-    "id": "msg_025",
-    "raw_text": "🔥 1-FOR-1 xiao long bao today!! Paradise Dynasty @ Orchard. Dine in only, 3pm–6pm."
-  },
-  {
-    "id": "msg_026",
-    "raw_text": "Chinese BBQ rice set only $7.50 at Roast Paradise, Clementi. Available Mon–Fri, lunch hours."
-  },
-  {
-    "id": "msg_027",
-    "raw_text": "Spend $50 at Imperial Treasure and receive $10 voucher for your next visit. Tanjong Pagar outlet. Promo ends 30 Sep."
-  },
-  {
-    "id": "msg_028",
-    "raw_text": "🥡 Late night noodles $5.90 after 8.30pm at Noodle House, Bugis. Valid every day this month."
-  },
-  {
-    "id": "msg_029",
-    "raw_text": "INDIAN FOOD DEAL 🇮🇳 Banana Leaf Apolo: 15% off lunch sets at Little India! Valid 10–17 Sep."
-  },
-  {
-    "id": "msg_030",
-    "raw_text": "Student special!! Butter chicken + naan + drink for just $11.90 at Curry Culture, Clementi. Show student card."
-  },
-  {
-    "id": "msg_031",
-    "raw_text": "2 biryanis for $18 at Biryani Blues, Jurong East. Weekend promo only. Code BIRYANI18."
-  },
-  {
-    "id": "msg_032",
-    "raw_text": "🍛 $5.90 prata set at Springleaf Prata, Buona Vista! Includes 2 plain prata + teh tarik. Till 25 Sep."
-  },
-  {
-    "id": "msg_033",
-    "raw_text": "Spice Junction giving FREE naan with every curry order above $20. Paya Lebar branch. Valid this weekend."
-  },
-  {
-    "id": "msg_034",
-    "raw_text": "20% OFF vegetarian Indian dishes at Little India Spice. Promo valid Monday-Friday, 8-30 September."
-  },
-  {
-    "id": "msg_035",
-    "raw_text": "🍕 PIZZA NIGHT 🍕 Pizza Hut Clementi — 1 large pizza + 2 sides for $25.90. Online orders only. Use PIZZA25."
-  },
-  {
-    "id": "msg_036",
-    "raw_text": "Pastamania Orchard has 20% off all pasta dishes this weekend! Dine-in only, Sat & Sun."
-  },
-  {
-    "id": "msg_037",
-    "raw_text": "Italian lunch deal 🇮🇹 $13.90 for pasta + drink at Bella Italia, Tiong Bahru. Weekdays until 30 Sep."
-  },
-  {
-    "id": "msg_038",
-    "raw_text": "FREE garlic bread with every pizza at Napoli Kitchen, Bugis. No minimum spend. Valid 7–14 Sep."
-  },
-  {
-    "id": "msg_039",
-    "raw_text": "2-for-1 Margherita pizzas 🍕 at Pizza Roma, Orchard Road. Wednesday only. 6pm onwards."
-  },
-  {
-    "id": "msg_040",
-    "raw_text": "Pasta Lovers promo: any 2 mains + dessert $29.90 at Pasta Fresca, Paya Lebar. Valid through Sunday."
-  },
-  {
-    "id": "msg_041",
-    "raw_text": "🌮 TACOS 1-FOR-1 🌮 every Tuesday at Muchachos, Tanjong Pagar! Dine in only, 5pm onwards."
-  },
-  {
-    "id": "msg_042",
-    "raw_text": "Mexican Fiesta deal — burrito bowl + drink $12.90 at Guzman y Gomez, HarbourFront. Valid till 21 Sep."
-  },
-  {
-    "id": "msg_043",
-    "raw_text": "15% off all nachos at Taco Loco, Bugis this weekend. Code: LOCO15."
-  },
-  {
-    "id": "msg_044",
-    "raw_text": "Cheap Mexican lunch! Burritos from $8.90 at El Camino, Clementi. Mon-Fri, 11am to 2pm."
-  },
-  {
-    "id": "msg_045",
-    "raw_text": "🔥 Buy any 2 tacos and get churros FREE! Casa Mexicana @ Orchard. Promo ends 15 September."
-  },
-  {
-    "id": "msg_046",
-    "raw_text": "🇻🇳 Vietnamese food promo — pho + spring rolls $10.90 at Pho Street, Jurong East. Weekday lunch only."
-  },
-  {
-    "id": "msg_047",
-    "raw_text": "20% OFF pho bowls at Saigon Kitchen, Tiong Bahru. Valid 9–16 Sep. Use code PHO20."
-  },
-  {
-    "id": "msg_048",
-    "raw_text": "Banh mi only $5.50 today 😍 Viet Corner at Bugis. Limited to first 100 customers."
-  },
-  {
-    "id": "msg_049",
-    "raw_text": "Weekend Vietnamese feast: 2 pho + 2 drinks for $22.90 at Hanoi House, Clementi."
-  },
-  {
-    "id": "msg_050",
-    "raw_text": "FREE Vietnamese coffee with any main course at Saigon Social, Paya Lebar. Valid this Saturday & Sunday."
-  },
-  {
-    "id": "msg_051",
-    "raw_text": "🍗 Malay food deal! Ayam Penyet President — chicken set $7.90 at Tampines. Valid all week."
-  },
-  {
-    "id": "msg_052",
-    "raw_text": "Nasi Padang lunch special from $6.50 at Warung Nusa, Bugis. Mon–Fri before 3pm."
-  },
-  {
-    "id": "msg_053",
-    "raw_text": "10% off your total bill at Selera Kampung, Jurong East. Student promo, just show matriculation card. Till 30 Sep."
-  },
-  {
-    "id": "msg_054",
-    "raw_text": "🔥 1-for-1 ayam penyet this Sunday at Penyet Paradise, Clementi! 12pm onwards."
-  },
-  {
-    "id": "msg_055",
-    "raw_text": "Free teh tarik with every nasi lemak set at Kampung Delights, Paya Lebar. Weekend promo."
-  },
-  {
-    "id": "msg_056",
-    "raw_text": "WESTERN LUNCH DEAL 🍔 Burger + fries + drink for $9.90 at The Grill House, Buona Vista. Weekdays only."
-  },
-  {
-    "id": "msg_057",
-    "raw_text": "20% OFF all burgers at Burger Lab, Clementi this weekend! Use code BURGER20."
-  },
-  {
-    "id": "msg_058",
-    "raw_text": "Steak night 🥩 2 steaks for $39.90 at Meat & Co, Tanjong Pagar. Friday and Saturday only."
-  },
-  {
-    "id": "msg_059",
-    "raw_text": "Chicken chop set $8.90 at Western Corner, Jurong East. Valid 7-30 Sept, lunch only."
-  },
-  {
-    "id": "msg_060",
-    "raw_text": "FREE fries with every burger order above $15 at Burger Station, Orchard. No promo code needed."
-  },
-  {
-    "id": "msg_061",
-    "raw_text": "☕ CAFE DEAL: buy 1 iced latte get 1 FREE at Brew & Co, Clementi. Weekdays 2–5pm. Ends 18 Sep."
-  },
-  {
-    "id": "msg_062",
-    "raw_text": "Matcha lovers 🍵 $5 matcha latte at Matcha Corner, Bugis! Student ID required. Valid this week."
-  },
-  {
-    "id": "msg_063",
-    "raw_text": "20% off all cakes at Sweet Spot Cafe, Tiong Bahru. Valid Mon–Thu until 24 Sep."
-  },
-  {
-    "id": "msg_064",
-    "raw_text": "Coffee + croissant combo only $6.90 at Daily Grind, Buona Vista. Available before 11am."
-  },
-  {
-    "id": "msg_065",
-    "raw_text": "🎂 Weekend dessert deal — 2 waffles + 2 drinks for $16.90 at Waffle Works, Paya Lebar."
-  },
-  {
-    "id": "msg_066",
-    "raw_text": "BOGO bubble tea!! Buy 1 large milk tea, get 1 free at Tea Republic, Clementi Mall. Friday only."
-  },
-  {
-    "id": "msg_067",
-    "raw_text": "🍦 FREE ice cream scoop with any $20 spend at Dessert Lab, HarbourFront. Promo valid till 20 Sep."
-  },
-  {
-    "id": "msg_068",
-    "raw_text": "Late night dessert deal 🌙 30% off waffles after 9pm at Sweet Dreams, Bugis. Every Fri & Sat."
-  },
-  {
-    "id": "msg_069",
-    "raw_text": "Makan deal of the week! Spend $25 at Food Junction, Jurong East and get $5 off. Code MAKAN5. Valid 8–15 Sep."
-  },
-  {
-    "id": "msg_070",
-    "raw_text": "🚨 FLASH PROMO 🚨 $10 off when you spend $40 at selected restaurants around Orchard. Today only!! Use code ORCHARD10. T&Cs apply."
+    "id": "deal_001",
+    "raw_text": "🔥 THAI EXPRESS DEAL 🔥 20% OFF selected lunch sets at Clementi Mall! Valid until 15 Sep. Use code THAI20.",
+    "restaurant": "Thai Express",
+    "title": "20% Off Lunch Sets",
+    "cuisine": "Thai",
+    "location": "Clementi",
+    "discount": "20% off",
+    "price": "cheap",
+    "start_date": "2026-09-01",
+    "expiry_date": "2026-09-15",
+    "promo_code": "THAI20",
+    "source": "Telegram",
+    "source_url": "https://example.com/deal_001"
+  },
+  {
+    "id": "deal_002",
+    "raw_text": "🍜 NAKHON KITCHEN — weekday lunch special! Thai set only $8.90 at Buona Vista. Available 7–30 Sep.",
+    "restaurant": "Nakhon Kitchen",
+    "title": "Thai Lunch Set",
+    "cuisine": "Thai",
+    "location": "Buona Vista",
+    "discount": "Set for $8.90",
+    "price": "cheap",
+    "start_date": "2026-09-07",
+    "expiry_date": "2026-09-30",
+    "promo_code": null,
+    "source": "Telegram",
+    "source_url": "https://example.com/deal_002"
+  },
+  {
+    "id": "deal_003",
+    "raw_text": "🌶️ SIAM KITCHEN TUESDAY DEAL: 1-for-1 Pad Thai every Tuesday evening at Jurong East! Code SIAM2FOR1.",
+    "restaurant": "Siam Kitchen",
+    "title": "1-for-1 Pad Thai",
+    "cuisine": "Thai",
+    "location": "Jurong East",
+    "discount": "1-for-1",
+    "price": "cheap",
+    "start_date": "2026-09-01",
+    "expiry_date": "2026-10-31",
+    "promo_code": "SIAM2FOR1",
+    "source": "Telegram",
+    "source_url": "https://example.com/deal_003"
+  },
+  {
+    "id": "deal_004",
+    "raw_text": "Weekend only! Thai Street Food is giving 15% OFF selected dishes every Sat & Sun at Tiong Bahru. 🍛",
+    "restaurant": "Thai Street Food",
+    "title": "15% Weekend Discount",
+    "cuisine": "Thai",
+    "location": "Tiong Bahru",
+    "discount": "15% off",
+    "price": "moderate",
+    "start_date": "2026-09-05",
+    "expiry_date": "2026-09-27",
+    "promo_code": "WEEKEND15",
+    "source": "Instagram",
+    "source_url": "https://example.com/deal_004"
+  },
+  {
+    "id": "deal_005",
+    "raw_text": "🥤 BANGKOK JAM: FREE Thai milk tea with any main course purchased at Orchard! Valid 3–20 Sep.",
+    "restaurant": "Bangkok Jam",
+    "title": "Free Thai Milk Tea",
+    "cuisine": "Thai",
+    "location": "Orchard",
+    "discount": "Free drink",
+    "price": "moderate",
+    "start_date": "2026-09-03",
+    "expiry_date": "2026-09-20",
+    "promo_code": null,
+    "source": "Telegram",
+    "source_url": "https://example.com/deal_005"
+  },
+  {
+    "id": "deal_006",
+    "raw_text": "🐔 Ah Seng Chicken Rice — only $5 for chicken rice + soup + drink! Find us at Clementi. Deal ends 30 Sep.",
+    "restaurant": "Ah Seng Chicken Rice",
+    "title": "$5 Chicken Rice Set",
+    "cuisine": "Chinese",
+    "location": "Clementi",
+    "discount": "Set for $5",
+    "price": "cheap",
+    "start_date": "2026-09-05",
+    "expiry_date": "2026-09-30",
+    "promo_code": null,
+    "source": "Telegram",
+    "source_url": "https://example.com/deal_006"
+  },
+  {
+    "id": "deal_007",
+    "raw_text": "🥟 DUMPLING HOUSE LUNCH PROMO: 30% off handmade dumplings at Jurong East. Mon–Fri, 1–14 Sep. Code DUMPLING30.",
+    "restaurant": "Dumpling House",
+    "title": "30% Off Dumplings",
+    "cuisine": "Chinese",
+    "location": "Jurong East",
+    "discount": "30% off",
+    "price": "cheap",
+    "start_date": "2026-09-01",
+    "expiry_date": "2026-09-14",
+    "promo_code": "DUMPLING30",
+    "source": "Telegram",
+    "source_url": "https://example.com/deal_007"
+  },
+  {
+    "id": "deal_008",
+    "raw_text": "💰 Hawker Wok budget deal: zi char set + rice + drink only $6.50 at Paya Lebar. 7–21 Sep!",
+    "restaurant": "Hawker Wok",
+    "title": "$6.50 Zi Char Set",
+    "cuisine": "Chinese",
+    "location": "Paya Lebar",
+    "discount": "Set for $6.50",
+    "price": "cheap",
+    "start_date": "2026-09-07",
+    "expiry_date": "2026-09-21",
+    "promo_code": null,
+    "source": "Facebook",
+    "source_url": "https://example.com/deal_008"
+  },
+  {
+    "id": "deal_009",
+    "raw_text": "🦆 GOLDEN ROAST: 20% OFF selected roast duck & char siew dishes at Chinatown. Promo runs 8–30 Sep. Use ROAST20.",
+    "restaurant": "Golden Roast",
+    "title": "20% Off Roast Meats",
+    "cuisine": "Chinese",
+    "location": "Chinatown",
+    "discount": "20% off",
+    "price": "moderate",
+    "start_date": "2026-09-08",
+    "expiry_date": "2026-09-30",
+    "promo_code": "ROAST20",
+    "source": "Telegram",
+    "source_url": "https://example.com/deal_009"
+  },
+  {
+    "id": "deal_010",
+    "raw_text": "🥢 DIM SUM CORNER weekend set for 2: 6 assorted dim sum dishes for $18! Available Bugis weekends from 12 Sep.",
+    "restaurant": "Dim Sum Corner",
+    "title": "Weekend Dim Sum Set",
+    "cuisine": "Chinese",
+    "location": "Bugis",
+    "discount": "Set for $18",
+    "price": "moderate",
+    "start_date": "2026-09-12",
+    "expiry_date": "2026-10-04",
+    "promo_code": null,
+    "source": "Instagram",
+    "source_url": "https://example.com/deal_010"
+  },
+  {
+    "id": "deal_011",
+    "raw_text": "🍣 SUSHI GO WEDNESDAY: 1-for-1 salmon don at Clementi! Every Wednesday, 2–30 Sep. Code SALMON2.",
+    "restaurant": "Sushi Go",
+    "title": "1-for-1 Salmon Don",
+    "cuisine": "Japanese",
+    "location": "Clementi",
+    "discount": "1-for-1",
+    "price": "moderate",
+    "start_date": "2026-09-02",
+    "expiry_date": "2026-09-30",
+    "promo_code": "SALMON2",
+    "source": "Telegram",
+    "source_url": "https://example.com/deal_011"
+  },
+  {
+    "id": "deal_012",
+    "raw_text": "🍜 RAMEN STREET weekday lunch special — selected ramen bowls just $9.90! Buona Vista, 7–25 Sep.",
+    "restaurant": "Ramen Street",
+    "title": "$9.90 Ramen Lunch",
+    "cuisine": "Japanese",
+    "location": "Buona Vista",
+    "discount": "Set for $9.90",
+    "price": "cheap",
+    "start_date": "2026-09-07",
+    "expiry_date": "2026-09-25",
+    "promo_code": null,
+    "source": "Telegram",
+    "source_url": "https://example.com/deal_012"
+  },
+  {
+    "id": "deal_013",
+    "raw_text": "🥩 KATSU LAB: 25% OFF selected chicken & pork katsu sets at Orchard. Valid 1–18 Sep. KATSU25.",
+    "restaurant": "Katsu Lab",
+    "title": "25% Off Katsu Sets",
+    "cuisine": "Japanese",
+    "location": "Orchard",
+    "discount": "25% off",
+    "price": "moderate",
+    "start_date": "2026-09-01",
+    "expiry_date": "2026-09-18",
+    "promo_code": "KATSU25",
+    "source": "Instagram",
+    "source_url": "https://example.com/deal_013"
+  },
+  {
+    "id": "deal_014",
+    "raw_text": "🍱 TOKYO BENTO evening promo: FREE miso soup with every bento after 6pm at Tampines. 5–27 Sep.",
+    "restaurant": "Tokyo Bento",
+    "title": "Free Miso Soup",
+    "cuisine": "Japanese",
+    "location": "Tampines",
+    "discount": "Free soup",
+    "price": "cheap",
+    "start_date": "2026-09-05",
+    "expiry_date": "2026-09-27",
+    "promo_code": null,
+    "source": "Telegram",
+    "source_url": "https://example.com/deal_014"
+  },
+  {
+    "id": "deal_015",
+    "raw_text": "🍶 IZAKAYA 88 weekend deal — 20% OFF selected small plates at Tanjong Pagar! Starts 12 Sep. Code IZAKAYA20.",
+    "restaurant": "Izakaya 88",
+    "title": "20% Off Weekend Izakaya",
+    "cuisine": "Japanese",
+    "location": "Tanjong Pagar",
+    "discount": "20% off",
+    "price": "moderate",
+    "start_date": "2026-09-12",
+    "expiry_date": "2026-10-31",
+    "promo_code": "IZAKAYA20",
+    "source": "Telegram",
+    "source_url": "https://example.com/deal_015"
   }
 ]
