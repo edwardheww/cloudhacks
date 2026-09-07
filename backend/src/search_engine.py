@@ -6,9 +6,9 @@ import os
 from datetime import date, datetime
 from pathlib import Path
 
-import psycopg
 from dotenv import load_dotenv
 from psycopg.rows import dict_row
+from psycopg_pool import ConnectionPool
 
 from src.embedding_service import EmbeddingService, vector_to_pgvector
 from src.query_parser import ParsedQuery, parse_query
@@ -17,6 +17,27 @@ BACKEND_DIR = Path(__file__).resolve().parents[1]
 load_dotenv(BACKEND_DIR / ".env")
 
 _embedding_service: EmbeddingService | None = None
+_pool: ConnectionPool | None = None
+
+
+def get_pool() -> ConnectionPool:
+    """Return one shared connection pool for the lifetime of the backend process.
+
+    Opening a fresh TCP+TLS+auth connection to Supabase on every request was
+    costing ~1s per request on its own, before any query even ran. A pool
+    keeps a handful of connections warm and reuses them instead.
+    """
+    global _pool
+
+    if _pool is None:
+        _pool = ConnectionPool(
+            os.environ["DATABASE_URL"],
+            min_size=1,
+            max_size=5,
+            kwargs={"prepare_threshold": None, "row_factory": dict_row},
+        )
+
+    return _pool
 
 DEAL_FIELDS = """
     id, restaurant, title, cuisine, location, discount, price,
@@ -205,12 +226,7 @@ def search(query: str, limit: int = 5) -> list[dict]:
     )
 
     # Search Supabase/PostgreSQL.
-    with psycopg.connect(
-        os.environ["DATABASE_URL"],
-        connect_timeout=10,
-        prepare_threshold=None,
-        row_factory=dict_row,
-    ) as connection:
+    with get_pool().connection() as connection:
         with connection.cursor() as cursor:
             cursor.execute(sql, parameters)
             rows = cursor.fetchall()
@@ -249,12 +265,7 @@ def list_deals(limit: int = 20) -> list[dict]:
 
     This is the interface the FastAPI layer's `/deals` route should call.
     """
-    with psycopg.connect(
-        os.environ["DATABASE_URL"],
-        connect_timeout=10,
-        prepare_threshold=None,
-        row_factory=dict_row,
-    ) as connection:
+    with get_pool().connection() as connection:
         with connection.cursor() as cursor:
             cursor.execute(LIST_DEALS_SQL, (limit,))
             rows = cursor.fetchall()
@@ -267,12 +278,7 @@ def get_deal(deal_id: str) -> dict | None:
 
     This is the interface the FastAPI layer's deal-detail route should call.
     """
-    with psycopg.connect(
-        os.environ["DATABASE_URL"],
-        connect_timeout=10,
-        prepare_threshold=None,
-        row_factory=dict_row,
-    ) as connection:
+    with get_pool().connection() as connection:
         with connection.cursor() as cursor:
             cursor.execute(GET_DEAL_SQL, (deal_id,))
             row = cursor.fetchone()

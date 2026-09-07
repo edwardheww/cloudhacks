@@ -99,7 +99,7 @@ export default function DealCard({ deal, match, query, favorited, onToggleFavori
         )}
 
         <div className="flex w-full gap-2.5">
-          <Link to={`/deal/${deal.id}`} state={{ query }} viewTransition className="flex-1">
+          <Link to={`/deal/${deal.id}`} state={{ query, match }} viewTransition className="flex-1">
             <PillButton variant="primary" className="w-full">
               View Deal
             </PillButton>

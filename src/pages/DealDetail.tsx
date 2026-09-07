@@ -23,18 +23,19 @@ interface MatchInfo {
 export default function DealDetail() {
   const { id } = useParams<{ id: string }>()
   const location = useLocation()
-  const query = (location.state as { query?: string } | null)?.query ?? ''
+  const state = location.state as { query?: string; match?: MatchInfo } | null
+  const query = state?.query ?? ''
+  const passedMatch = state?.match ?? null
 
   const [deal, setDeal] = useState<Deal | null>(null)
   const [status, setStatus] = useState<'loading' | 'ready' | 'notfound' | 'error'>('loading')
-  const [match, setMatch] = useState<MatchInfo | null>(null)
+  const [match, setMatch] = useState<MatchInfo | null>(passedMatch)
   const [copied, setCopied] = useState(false)
 
   useEffect(() => {
     if (!id) return
     let cancelled = false
     setStatus('loading')
-    setMatch(null)
 
     getDeal(id)
       .then((d) => {
@@ -46,7 +47,14 @@ export default function DealDetail() {
         if (!cancelled) setStatus('error')
       })
 
-    if (query.trim()) {
+    // The card that linked here already computed this deal's match — reuse
+    // it instead of re-running a full semantic search (a second BGE-M3
+    // embedding + DB round trip) just to recover the same numbers. Only
+    // fall back to re-fetching when arriving without that context (a
+    // direct link, refresh, or bookmark).
+    if (passedMatch) {
+      setMatch(passedMatch)
+    } else if (query.trim()) {
       searchDeals(query, 20)
         .then((results) => {
           if (cancelled) return
@@ -58,12 +66,14 @@ export default function DealDetail() {
         .catch(() => {
           // match context is a bonus — silently skip if it fails
         })
+    } else {
+      setMatch(null)
     }
 
     return () => {
       cancelled = true
     }
-  }, [id, query])
+  }, [id, query, passedMatch])
 
   if (status === 'loading') {
     return (

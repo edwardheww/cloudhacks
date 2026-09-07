@@ -13,7 +13,7 @@ from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 
 from src.query_parser import CUISINES, LOCATIONS
-from src.search_engine import get_deal, get_embedding_service, list_deals, search
+from src.search_engine import get_deal, get_embedding_service, get_pool, list_deals, search
 
 logger = logging.getLogger(__name__)
 
@@ -26,6 +26,10 @@ def warm_up_embedding_model() -> None:
     # on the main thread during startup, avoids a hang/deadlock that occurs
     # when it instead happens lazily inside a request's worker thread.
     get_embedding_service().embed(["warm up"])
+
+    # Establish the DB connection pool up front too, so the first real
+    # request doesn't pay for opening a fresh connection to Supabase.
+    get_pool().wait()
 
 app.add_middleware(
     CORSMiddleware,

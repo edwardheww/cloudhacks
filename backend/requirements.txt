@@ -1,4 +1,4 @@
-psycopg[binary]
+psycopg[binary,pool]
 python-dotenv
 FlagEmbedding
 fastapi
