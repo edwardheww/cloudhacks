@@ -50,7 +50,9 @@ export function useSpeechRecognition(onResult: (transcript: string) => void) {
     if (!Ctor) return
 
     const recognition = new Ctor()
-    recognition.lang = 'en-SG'
+    // en-US has by far the most mature speech model in Chrome's built-in
+    // recognizer — en-SG measurably mis-hears more, even for local terms.
+    recognition.lang = 'en-US'
     recognition.interimResults = false
     recognition.maxAlternatives = 1
 

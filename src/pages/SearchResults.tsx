@@ -106,24 +106,27 @@ export default function SearchResults() {
               placeholder="What are you craving?"
               className="min-w-0 flex-1 bg-transparent text-sm font-medium text-text placeholder:text-text-muted focus:outline-none"
             />
-            {speech.supported && (
-              <button
-                type="button"
-                onClick={() => (speech.listening ? speech.stop() : speech.start())}
-                aria-label={speech.listening ? 'Stop voice search' : 'Search by voice'}
-                aria-pressed={speech.listening}
-                className={`flex size-7 shrink-0 items-center justify-center rounded-full transition-colors ${
-                  speech.listening ? 'animate-pulse bg-accent text-[#0f0e0d]' : 'text-text-muted hover:bg-white/10'
-                }`}
-              >
-                <MicrophoneIcon className="size-3.5" />
-              </button>
-            )}
           </div>
           <PillButton type="submit" variant="primary">
             Search
           </PillButton>
         </form>
+
+        {speech.supported && (
+          <button
+            type="button"
+            onClick={() => (speech.listening ? speech.stop() : speech.start())}
+            aria-label={speech.listening ? 'Stop voice search' : 'Search by voice'}
+            aria-pressed={speech.listening}
+            className={`order-3 flex size-9 shrink-0 items-center justify-center rounded-full border transition-colors sm:order-none ${
+              speech.listening
+                ? 'animate-pulse border-accent bg-accent text-[#0f0e0d]'
+                : 'border-white/10 bg-white/6 text-text-muted hover:bg-white/10'
+            }`}
+          >
+            <MicrophoneIcon className="size-3.5" />
+          </button>
+        )}
 
         <TopNav variant="inline" />
       </header>

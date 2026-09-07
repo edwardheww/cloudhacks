@@ -49,38 +49,45 @@ export default function Home() {
           Find food deals without the digging.
         </p>
 
-        <form
-          onSubmit={(e) => {
-            e.preventDefault()
-            goSearch(query)
-          }}
-          className="fade-in-up flex w-full max-w-[560px] items-center gap-2 rounded-full border border-white/14 bg-white/6 py-1.5 pr-1.5 pl-4 shadow-[0px_8px_30px_0px_rgba(0,0,0,0.4)] sm:gap-3 sm:pl-6"
+        <div
+          className="fade-in-up flex w-full max-w-[620px] items-center gap-3"
           style={{ animationDelay: `${REST_DELAY}ms` }}
         >
-          <MagnifyingGlassIcon className="size-4 text-text-dim" />
-          <input
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="What are you craving?"
-            className="min-w-0 flex-1 bg-transparent py-3 text-[15px] text-text-dim placeholder:text-text-dim focus:outline-none"
-          />
+          <form
+            onSubmit={(e) => {
+              e.preventDefault()
+              goSearch(query)
+            }}
+            className="flex min-w-0 flex-1 items-center gap-2 rounded-full border border-white/14 bg-white/6 py-1.5 pr-1.5 pl-4 shadow-[0px_8px_30px_0px_rgba(0,0,0,0.4)] sm:gap-3 sm:pl-6"
+          >
+            <MagnifyingGlassIcon className="size-4 text-text-dim" />
+            <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="What are you craving?"
+              className="min-w-0 flex-1 bg-transparent py-3 text-[15px] text-text-dim placeholder:text-text-dim focus:outline-none"
+            />
+            <PillButton type="submit" variant="primary">
+              Search
+            </PillButton>
+          </form>
+
           {speech.supported && (
             <button
               type="button"
               onClick={() => (speech.listening ? speech.stop() : speech.start())}
               aria-label={speech.listening ? 'Stop voice search' : 'Search by voice'}
               aria-pressed={speech.listening}
-              className={`flex size-9 shrink-0 items-center justify-center rounded-full transition-colors ${
-                speech.listening ? 'animate-pulse bg-accent text-[#0f0e0d]' : 'bg-white/8 text-text-dim hover:bg-white/14'
+              className={`flex size-11 shrink-0 items-center justify-center rounded-full border transition-colors ${
+                speech.listening
+                  ? 'animate-pulse border-accent bg-accent text-[#0f0e0d]'
+                  : 'border-white/14 bg-white/6 text-text-dim hover:bg-white/14'
               }`}
             >
               <MicrophoneIcon className="size-4" />
             </button>
           )}
-          <PillButton type="submit" variant="primary">
-            Search
-          </PillButton>
-        </form>
+        </div>
 
         <div
           className="fade-in-up flex w-full flex-wrap items-center justify-center gap-2.5"
