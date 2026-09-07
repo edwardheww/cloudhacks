@@ -23,7 +23,16 @@ def main() -> None:
     query = " ".join(sys.argv[1:])
     parsed = parse_query(query)
     results = search(query)
-    reasons = ", ".join(parsed.match_reasons()) or "no explicit filters"
+    reasons = ", ".join(
+        reason
+        for reason in (
+            parsed.cuisine,
+            parsed.location,
+            parsed.price,
+            parsed.date_range.label if parsed.date_range else None,
+        )
+        if reason
+    ) or "no explicit filters"
     print(f"Detected filters: {reasons}")
     for result in results:
         score = float(result.pop("semantic_score"))

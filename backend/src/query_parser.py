@@ -76,23 +76,6 @@ class ParsedQuery:
     price: str | None = None
     date_range: DateRange | None = None
 
-    def match_reasons(self) -> list[str]:
-        reasons = []
-
-        if self.cuisine:
-            reasons.append(self.cuisine)
-
-        if self.location:
-            reasons.append(self.location)
-
-        if self.price:
-            reasons.append(self.price.title())
-
-        if self.date_range:
-            reasons.append(self.date_range.label.title())
-
-        return reasons
-
 
 def _contains_term(query: str, term: str) -> bool:
     return (

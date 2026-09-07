@@ -195,6 +195,20 @@ def _json_value(value):
 
     return value
 
+
+def _date_value(value):
+    if isinstance(value, datetime):
+        return value.date()
+
+    if isinstance(value, date):
+        return value
+
+    if isinstance(value, str):
+        return date.fromisoformat(value)
+
+    return None
+
+
 def _get_match_reasons(deal, parsed_query):
     """Explain why a deal matched the user's search."""
 
@@ -219,10 +233,12 @@ def _get_match_reasons(deal, parsed_query):
         deal_price = (deal.get("price") or "").casefold()
 
         if parsed_query.price == "cheap":
-            reasons.append("Budget-friendly")
+            if deal_price == "cheap":
+                reasons.append("Budget-friendly")
 
         elif parsed_query.price == "moderate":
-            reasons.append("Moderate price")
+            if deal_price == "moderate":
+                reasons.append("Moderate price")
 
         elif parsed_query.price.startswith("under_"):
             max_price = float(parsed_query.price.split("_")[1])
@@ -241,8 +257,8 @@ def _get_match_reasons(deal, parsed_query):
 
     # Date
     if parsed_query.date_range:
-        deal_start = deal.get("start_date")
-        deal_end = deal.get("expiry_date")
+        deal_start = _date_value(deal.get("start_date"))
+        deal_end = _date_value(deal.get("expiry_date"))
 
         if deal_start and deal_end:
             if (
