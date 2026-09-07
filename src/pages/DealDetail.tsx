@@ -8,21 +8,83 @@ import {
   SparklesIcon,
   TagIcon,
 } from '@heroicons/react/24/solid'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useLocation, useParams } from 'react-router-dom'
+import { getDeal, searchDeals, type Deal } from '../api/deals'
 import PillButton from '../components/PillButton'
 import Wordmark from '../components/Wordmark'
-import { getDeal } from '../data/deals'
-import { matchDeal } from '../data/matching'
-import { formatDateRange } from '../lib/format'
+import { capitalize, formatDateRange } from '../lib/format'
+
+interface MatchInfo {
+  matchPercent: number
+  matchReasons: string[]
+}
 
 export default function DealDetail() {
   const { id } = useParams<{ id: string }>()
   const location = useLocation()
-  const deal = id ? getDeal(id) : undefined
+  const query = (location.state as { query?: string } | null)?.query ?? ''
+
+  const [deal, setDeal] = useState<Deal | null>(null)
+  const [status, setStatus] = useState<'loading' | 'ready' | 'notfound' | 'error'>('loading')
+  const [match, setMatch] = useState<MatchInfo | null>(null)
   const [copied, setCopied] = useState(false)
 
-  if (!deal) {
+  useEffect(() => {
+    if (!id) return
+    let cancelled = false
+    setStatus('loading')
+    setMatch(null)
+
+    getDeal(id)
+      .then((d) => {
+        if (cancelled) return
+        setDeal(d)
+        setStatus(d ? 'ready' : 'notfound')
+      })
+      .catch(() => {
+        if (!cancelled) setStatus('error')
+      })
+
+    if (query.trim()) {
+      searchDeals(query, 20)
+        .then((results) => {
+          if (cancelled) return
+          const hit = results.find((r) => r.id === id)
+          if (hit) {
+            setMatch({ matchPercent: hit.semantic_score * 100, matchReasons: hit.match_reasons })
+          }
+        })
+        .catch(() => {
+          // match context is a bonus — silently skip if it fails
+        })
+    }
+
+    return () => {
+      cancelled = true
+    }
+  }, [id, query])
+
+  if (status === 'loading') {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-bg">
+        <p className="text-text-muted">Loading deal…</p>
+      </div>
+    )
+  }
+
+  if (status === 'error') {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-bg text-center">
+        <p className="text-lg text-text">Couldn't reach the search service.</p>
+        <Link to="/search" className="text-accent underline">
+          Back to results
+        </Link>
+      </div>
+    )
+  }
+
+  if (status === 'notfound' || !deal) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-bg text-center">
         <p className="text-lg text-text">Deal not found.</p>
@@ -33,11 +95,10 @@ export default function DealDetail() {
     )
   }
 
-  const query = (location.state as { query?: string } | null)?.query ?? ''
-  const match = matchDeal(deal, query)
   const directionsHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(deal.location)}`
 
   const handleGetDeal = async () => {
+    if (!deal.promo_code) return
     try {
       await navigator.clipboard.writeText(deal.promo_code)
       setCopied(true)
@@ -65,10 +126,12 @@ export default function DealDetail() {
           Back to results
         </Link>
 
-        <div className="absolute top-8 right-14 flex items-center gap-1.5 rounded-full bg-black/45 px-4 py-2.5 text-[13px] font-semibold">
-          <SparklesIcon className="size-4 text-accent-light" />
-          {match.matchPercent}% semantic match
-        </div>
+        {match && (
+          <div className="absolute top-8 right-14 flex items-center gap-1.5 rounded-full bg-black/45 px-4 py-2.5 text-[13px] font-semibold">
+            <SparklesIcon className="size-4 text-accent-light" />
+            {Math.round(match.matchPercent)}% semantic match
+          </div>
+        )}
 
         <div className="absolute inset-x-0 top-[110px] flex flex-col items-center gap-2 text-[rgba(255,255,255,0.55)]">
           <PhotoIcon className="size-9 opacity-50" />
@@ -77,7 +140,7 @@ export default function DealDetail() {
 
         <div className="relative z-10 flex flex-col gap-2">
           <h1 className="text-[44px] font-black text-text">{deal.restaurant}</h1>
-          <p className="text-lg font-semibold text-accent-light">{deal.description}</p>
+          <p className="text-lg font-semibold text-accent-light">{deal.title}</p>
         </div>
       </div>
 
@@ -95,7 +158,7 @@ export default function DealDetail() {
               </span>
               <span className="flex items-center gap-1.5 text-sm font-medium text-text-muted">
                 <CurrencyDollarIcon className="size-4" />
-                {deal.price}
+                {capitalize(deal.price)}
               </span>
               <span className="flex items-center gap-1.5 text-sm font-medium text-text-muted">
                 <TagIcon className="size-4" />
@@ -103,29 +166,33 @@ export default function DealDetail() {
               </span>
             </div>
 
-            <div className="inline-flex w-fit items-center gap-2.5 rounded-full border border-border-strong bg-white/6 px-[18px] py-3.5">
-              <span className="text-[13px] font-medium text-text-muted">Promo Code</span>
-              <span className="text-sm font-bold text-text">{deal.promo_code}</span>
-            </div>
+            {deal.promo_code && (
+              <div className="inline-flex w-fit items-center gap-2.5 rounded-full border border-border-strong bg-white/6 px-[18px] py-3.5">
+                <span className="text-[13px] font-medium text-text-muted">Promo Code</span>
+                <span className="text-sm font-bold text-text">{deal.promo_code}</span>
+              </div>
+            )}
 
-            <div className="flex flex-col gap-3.5">
-              <p className="text-xl font-bold text-text">Why this matched</p>
-              {match.matchReasons.map((reason) => (
-                <div
-                  key={reason}
-                  className="flex items-center gap-2.5 rounded-[14px] bg-surface-soft px-[18px] py-3.5 text-sm"
-                >
-                  <CheckIcon className="size-4 shrink-0 text-success" />
-                  <span className="font-medium text-text">{reason}</span>
-                </div>
-              ))}
-            </div>
+            {match && (
+              <div className="flex flex-col gap-3.5">
+                <p className="text-xl font-bold text-text">Why this matched</p>
+                {match.matchReasons.map((reason) => (
+                  <div
+                    key={reason}
+                    className="flex items-center gap-2.5 rounded-[14px] bg-surface-soft px-[18px] py-3.5 text-sm"
+                  >
+                    <CheckIcon className="size-4 shrink-0 text-success" />
+                    <span className="font-medium text-text">{reason}</span>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           <div className="flex w-[420px] shrink-0 flex-col gap-5">
             <div className="flex flex-col gap-2.5">
               <PillButton variant="primary" size="lg" className="w-full" onClick={handleGetDeal}>
-                {copied ? `Copied ${deal.promo_code}!` : 'Get This Deal'}
+                {copied ? `Copied ${deal.promo_code}!` : deal.promo_code ? 'Get This Deal' : 'No Code Needed'}
               </PillButton>
               <a href={directionsHref} target="_blank" rel="noopener noreferrer">
                 <PillButton variant="secondary" size="lg" className="w-full">

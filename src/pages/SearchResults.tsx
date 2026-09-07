@@ -1,35 +1,85 @@
 import { MagnifyingGlassIcon } from '@heroicons/react/24/solid'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
+import { getFilters, listDeals, searchDeals, type Deal } from '../api/deals'
 import DealCard from '../components/DealCard'
 import MultiSelectDropdown from '../components/MultiSelectDropdown'
 import PillButton from '../components/PillButton'
 import TopNav from '../components/TopNav'
 import Wordmark from '../components/Wordmark'
-import { deals } from '../data/deals'
-import { matchDeals } from '../data/matching'
+
+interface MatchInfo {
+  matchPercent: number
+  matchReasons: string[]
+}
+
+interface ResultRow {
+  deal: Deal
+  match: MatchInfo | null
+}
 
 export default function SearchResults() {
   const [searchParams, setSearchParams] = useSearchParams()
-  const [query, setQuery] = useState(searchParams.get('q') ?? 'cheap Thai food near Clementi')
+  const submittedQuery = searchParams.get('q') ?? ''
+  const isBrowsing = !submittedQuery.trim()
+  const [query, setQuery] = useState(submittedQuery)
   const [favorites, setFavorites] = useState<string[]>([])
 
-  const cuisines = useMemo(() => Array.from(new Set(deals.map((d) => d.cuisine))), [])
-  const locations = useMemo(() => Array.from(new Set(deals.map((d) => d.location))), [])
+  const [cuisines, setCuisines] = useState<string[]>([])
+  const [locations, setLocations] = useState<string[]>([])
+  const [activeCuisines, setActiveCuisines] = useState<string[]>([])
+  const [activeLocations, setActiveLocations] = useState<string[]>([])
 
-  const [activeCuisines, setActiveCuisines] = useState<string[]>(cuisines)
-  const [activeLocations, setActiveLocations] = useState<string[]>(locations)
+  const [rows, setRows] = useState<ResultRow[]>([])
+  const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading')
+
+  useEffect(() => {
+    getFilters()
+      .then((f) => {
+        setCuisines(f.cuisines)
+        setLocations(f.locations)
+        setActiveCuisines(f.cuisines)
+        setActiveLocations(f.locations)
+      })
+      .catch(() => {
+        // filter vocabulary is a nice-to-have; leave dropdowns empty on failure
+      })
+  }, [])
+
+  useEffect(() => {
+    let cancelled = false
+    setStatus('loading')
+
+    const request = isBrowsing
+      ? listDeals().then((deals) => deals.map((deal) => ({ deal, match: null })))
+      : searchDeals(submittedQuery).then((results) =>
+          results.map((result) => ({
+            deal: result,
+            match: { matchPercent: result.semantic_score * 100, matchReasons: result.match_reasons },
+          })),
+        )
+
+    request
+      .then((r) => {
+        if (cancelled) return
+        setRows(r)
+        setStatus('ready')
+      })
+      .catch(() => {
+        if (!cancelled) setStatus('error')
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [submittedQuery, isBrowsing])
 
   const toggleFavorite = (id: string) => {
     setFavorites((prev) => (prev.includes(id) ? prev.filter((f) => f !== id) : [...prev, id]))
   }
 
-  const results = useMemo(
-    () =>
-      matchDeals(deals, query).filter(
-        ({ deal }) => activeCuisines.includes(deal.cuisine) && activeLocations.includes(deal.location),
-      ),
-    [query, activeCuisines, activeLocations],
+  const filteredRows = useMemo(
+    () => rows.filter((r) => activeCuisines.includes(r.deal.cuisine) && activeLocations.includes(r.deal.location)),
+    [rows, activeCuisines, activeLocations],
   )
 
   return (
@@ -51,7 +101,8 @@ export default function SearchResults() {
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              className="min-w-0 flex-1 bg-transparent text-sm font-medium text-text focus:outline-none"
+              placeholder="cheap Thai food near Clementi"
+              className="min-w-0 flex-1 bg-transparent text-sm font-medium text-text placeholder:text-text-muted focus:outline-none"
             />
           </div>
           <PillButton type="submit" variant="primary">
@@ -65,7 +116,11 @@ export default function SearchResults() {
       <main className="flex w-full max-w-[1440px] flex-1 flex-col gap-6 px-14 pt-10 pb-16">
         <div className="flex flex-wrap items-center gap-4">
           <p className="text-[22px] font-bold text-text">
-            {results.length} deal{results.length === 1 ? '' : 's'} found
+            {status === 'loading'
+              ? 'Searching…'
+              : isBrowsing
+                ? 'Showing all deals'
+                : `${filteredRows.length} deal${filteredRows.length === 1 ? '' : 's'} found`}
           </p>
           <div className="flex flex-wrap items-center gap-2">
             <MultiSelectDropdown
@@ -83,14 +138,20 @@ export default function SearchResults() {
           </div>
         </div>
 
-        {results.length > 0 ? (
+        {status === 'error' ? (
+          <p className="py-16 text-center text-text-muted">
+            Couldn't reach the search service. Is the backend running?
+          </p>
+        ) : status === 'loading' ? (
+          <p className="py-16 text-center text-text-muted">Searching for deals…</p>
+        ) : filteredRows.length > 0 ? (
           <div className="flex flex-wrap gap-6">
-            {results.map(({ deal, match }) => (
+            {filteredRows.map(({ deal, match }) => (
               <DealCard
                 key={deal.id}
                 deal={deal}
                 match={match}
-                query={query}
+                query={submittedQuery}
                 favorited={favorites.includes(deal.id)}
                 onToggleFavorite={toggleFavorite}
               />

@@ -13,7 +13,7 @@ const WORDMARK_START_DELAY = 250
 const REST_DELAY = WORDMARK_START_DELAY + WORDMARK_TYPE_DURATION_MS + 200
 
 export default function Home() {
-  const [query, setQuery] = useState('cheap Thai food near Clementi')
+  const [query, setQuery] = useState('')
   const navigate = useNavigate()
 
   const goSearch = (value: string) => {

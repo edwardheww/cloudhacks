@@ -18,6 +18,20 @@ load_dotenv(BACKEND_DIR / ".env")
 
 _embedding_service: EmbeddingService | None = None
 
+DEAL_FIELDS = """
+    id, restaurant, title, cuisine, location, discount, price,
+    start_date, expiry_date, promo_code, source, source_url
+"""
+
+GET_DEAL_SQL = f"SELECT {DEAL_FIELDS} FROM deals WHERE id = %s;"
+
+LIST_DEALS_SQL = f"""
+SELECT {DEAL_FIELDS} FROM deals
+WHERE COALESCE(expiry_date, 'infinity'::date) >= CURRENT_DATE
+ORDER BY expiry_date ASC NULLS LAST, id
+LIMIT %s;
+"""
+
 SEARCH_SQL = """
 SELECT
     deals.id,
@@ -118,3 +132,42 @@ def search(query: str, limit: int = 5) -> list[dict]:
         result["match_reasons"] = reasons
         results.append(result)
     return results
+
+
+def list_deals(limit: int = 20) -> list[dict]:
+    """Return currently-active deals with no query-dependent match info —
+    used for browsing (e.g. an empty search) rather than a semantic query.
+
+    This is the interface the FastAPI layer's `/deals` route should call.
+    """
+    with psycopg.connect(
+        os.environ["DATABASE_URL"],
+        connect_timeout=10,
+        prepare_threshold=None,
+        row_factory=dict_row,
+    ) as connection:
+        with connection.cursor() as cursor:
+            cursor.execute(LIST_DEALS_SQL, (limit,))
+            rows = cursor.fetchall()
+
+    return [{key: _json_value(value) for key, value in row.items()} for row in rows]
+
+
+def get_deal(deal_id: str) -> dict | None:
+    """Return one deal by id, with no query-dependent match info attached.
+
+    This is the interface the FastAPI layer's deal-detail route should call.
+    """
+    with psycopg.connect(
+        os.environ["DATABASE_URL"],
+        connect_timeout=10,
+        prepare_threshold=None,
+        row_factory=dict_row,
+    ) as connection:
+        with connection.cursor() as cursor:
+            cursor.execute(GET_DEAL_SQL, (deal_id,))
+            row = cursor.fetchone()
+
+    if row is None:
+        return None
+    return {key: _json_value(value) for key, value in row.items()}

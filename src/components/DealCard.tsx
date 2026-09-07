@@ -1,15 +1,19 @@
 import { CheckIcon, HeartIcon, MapPinIcon, PhotoIcon, SparklesIcon } from '@heroicons/react/24/solid'
 import { HeartIcon as HeartIconOutline } from '@heroicons/react/24/outline'
 import { Link } from 'react-router-dom'
-import type { Deal } from '../data/deals'
-import type { DealMatch } from '../data/matching'
-import { formatShortDate } from '../lib/format'
+import type { Deal } from '../api/deals'
+import { capitalize, formatShortDate } from '../lib/format'
 import Chip from './Chip'
 import PillButton from './PillButton'
 
+interface DealMatchInfo {
+  matchPercent: number
+  matchReasons: string[]
+}
+
 interface DealCardProps {
   deal: Deal
-  match: DealMatch
+  match: DealMatchInfo | null
   query: string
   favorited: boolean
   onToggleFavorite: (id: string) => void
@@ -23,10 +27,12 @@ export default function DealCard({ deal, match, query, favorited, onToggleFavori
       <div className="relative h-[260px] w-full bg-hero">
         <div className="absolute inset-0 bg-gradient-to-b from-black/0 to-black/75" />
 
-        <div className="absolute top-3.5 right-3.5 flex items-center gap-1 rounded-full bg-black/45 px-2.5 py-1.5 text-xs font-semibold">
-          <SparklesIcon className="size-3.5 text-accent-light" />
-          {match.matchPercent}% match
-        </div>
+        {match && (
+          <div className="absolute top-3.5 right-3.5 flex items-center gap-1 rounded-full bg-black/45 px-2.5 py-1.5 text-xs font-semibold">
+            <SparklesIcon className="size-3.5 text-accent-light" />
+            {Math.round(match.matchPercent)}% match
+          </div>
+        )}
 
         <button
           type="button"
@@ -49,7 +55,7 @@ export default function DealCard({ deal, match, query, favorited, onToggleFavori
 
         <div className="absolute bottom-[24px] left-[18px] flex flex-col gap-1">
           <p className="text-[19px] font-bold text-text">{deal.restaurant}</p>
-          <p className="text-[13px] font-medium text-white/75">{deal.description}</p>
+          <p className="text-[13px] font-medium text-white/75">{deal.title}</p>
         </div>
       </div>
 
@@ -65,7 +71,7 @@ export default function DealCard({ deal, match, query, favorited, onToggleFavori
           <div className="flex flex-col gap-[3px]">
             <p className="text-[11px] text-text-muted">Price</p>
             <p className="text-[13px] font-semibold">
-              {deal.price} <span className="font-normal text-text-muted">· {deal.discount}</span>
+              {capitalize(deal.price)} <span className="font-normal text-text-muted">· {deal.discount}</span>
             </p>
           </div>
           <div className="flex flex-col gap-[3px]">
@@ -78,16 +84,18 @@ export default function DealCard({ deal, match, query, favorited, onToggleFavori
           </div>
         </div>
 
-        <div className="flex flex-wrap gap-x-2 gap-y-1.5">
-          {match.matchReasons.slice(0, 2).map((reason) => (
-            <Chip key={reason} tone="success">
-              <span className="inline-flex items-center gap-1">
-                <CheckIcon className="size-3" />
-                {reason}
-              </span>
-            </Chip>
-          ))}
-        </div>
+        {match && (
+          <div className="flex flex-wrap gap-x-2 gap-y-1.5">
+            {match.matchReasons.slice(0, 3).map((reason) => (
+              <Chip key={reason} tone="success">
+                <span className="inline-flex items-center gap-1">
+                  <CheckIcon className="size-3" />
+                  {reason}
+                </span>
+              </Chip>
+            ))}
+          </div>
+        )}
 
         <div className="flex w-full gap-2.5">
           <Link to={`/deal/${deal.id}`} state={{ query }} viewTransition className="flex-1">
