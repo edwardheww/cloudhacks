@@ -33,7 +33,10 @@ export default function LoadingBurger({ label = 'Loading…' }: LoadingBurgerPro
           <mask id="burger-bite-mask">
             <rect x="0" y="0" width="220" height="170" fill="white" />
             {/* each bite is two offset, differently-sized circles so the
-                chomp reads as an irregular chunk rather than a neat scoop */}
+                chomp reads as an irregular chunk rather than a neat scoop.
+                Six bites march right-to-left across the burger; the last
+                one is oversized and centered so it swallows whatever's
+                left, leaving the whole thing eaten before the loop resets. */}
             <circle className="burger-bite burger-bite-1a" cx="182" cy="44" r="0" fill="black" />
             <circle className="burger-bite burger-bite-1b" cx="168" cy="52" r="0" fill="black" />
 
@@ -42,6 +45,15 @@ export default function LoadingBurger({ label = 'Loading…' }: LoadingBurgerPro
 
             <circle className="burger-bite burger-bite-3a" cx="178" cy="142" r="0" fill="black" />
             <circle className="burger-bite burger-bite-3b" cx="164" cy="136" r="0" fill="black" />
+
+            <circle className="burger-bite burger-bite-4a" cx="138" cy="88" r="0" fill="black" />
+            <circle className="burger-bite burger-bite-4b" cx="120" cy="65" r="0" fill="black" />
+
+            <circle className="burger-bite burger-bite-5a" cx="85" cy="95" r="0" fill="black" />
+            <circle className="burger-bite burger-bite-5b" cx="68" cy="115" r="0" fill="black" />
+
+            <circle className="burger-bite burger-bite-6a" cx="95" cy="85" r="0" fill="black" />
+            <circle className="burger-bite burger-bite-6b" cx="55" cy="115" r="0" fill="black" />
           </mask>
         </defs>
 
@@ -83,6 +95,12 @@ export default function LoadingBurger({ label = 'Loading…' }: LoadingBurgerPro
           <circle className="burger-crumb burger-crumb-4" cx="212" cy="112" r="2.4" fill="#6b3d24" />
           <circle className="burger-crumb burger-crumb-5" cx="195" cy="140" r="3" fill="#dd9a52" />
           <circle className="burger-crumb burger-crumb-6" cx="204" cy="150" r="2" fill="#caa06a" />
+          <circle className="burger-crumb burger-crumb-7" cx="145" cy="60" r="3" fill="#caa06a" />
+          <circle className="burger-crumb burger-crumb-8" cx="125" cy="45" r="2.2" fill="#8c5a2e" />
+          <circle className="burger-crumb burger-crumb-9" cx="90" cy="70" r="3.6" fill="#e3a458" />
+          <circle className="burger-crumb burger-crumb-10" cx="70" cy="100" r="2" fill="#6b3d24" />
+          <circle className="burger-crumb burger-crumb-11" cx="100" cy="40" r="3.2" fill="#dd9a52" />
+          <circle className="burger-crumb burger-crumb-12" cx="45" cy="95" r="2.4" fill="#caa06a" />
         </g>
       </svg>
 

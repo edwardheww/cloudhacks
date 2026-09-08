@@ -92,28 +92,30 @@ body {
 /* Loading indicator: an SVG burger with three bites taken out of its edge
    in sequence. Each bite is two overlapping, differently-sized circles
    punched through an SVG <mask> (growing from r:0) so the chomp reads as
-   an irregular chunk rather than a neat scoop, and the three bites are
-   themselves different sizes (small nibble, big chomp, small nibble). A
-   feTurbulence/feDisplacementMap filter roughens every edge for a
-   hand-drawn feel, and a few crumbs fall away right as each bite lands.
-   All on one shared 3.6s timeline so everything stays in sync, then the
-   whole thing snaps back to whole and loops. */
+   an irregular chunk rather than a neat scoop, and each bite is a
+   different size as they march right-to-left across the burger — small
+   nibble, big chomp, small nibble, then two more, then one oversized final
+   bite that swallows whatever's left. A feTurbulence/feDisplacementMap
+   filter roughens every edge for a hand-drawn feel, and a couple of
+   crumbs fall away right as each bite lands. All on one shared 6s
+   timeline so everything stays in sync, ending in a fully-eaten burger
+   with a short beat before it snaps back to whole and loops. */
 @keyframes bite-grow-1a {
   0%,
-  9% {
+  8% {
     r: 0;
   }
-  9.1%,
+  8.1%,
   100% {
     r: 19;
   }
 }
 @keyframes bite-grow-1b {
   0%,
-  9% {
+  8% {
     r: 0;
   }
-  9.1%,
+  8.1%,
   100% {
     r: 12;
   }
@@ -121,20 +123,20 @@ body {
 
 @keyframes bite-grow-2a {
   0%,
-  42% {
+  24% {
     r: 0;
   }
-  42.1%,
+  24.1%,
   100% {
     r: 33;
   }
 }
 @keyframes bite-grow-2b {
   0%,
-  42% {
+  24% {
     r: 0;
   }
-  42.1%,
+  24.1%,
   100% {
     r: 19;
   }
@@ -142,60 +144,141 @@ body {
 
 @keyframes bite-grow-3a {
   0%,
-  75% {
+  40% {
     r: 0;
   }
-  75.1%,
+  40.1%,
   100% {
     r: 14;
   }
 }
 @keyframes bite-grow-3b {
   0%,
-  75% {
+  40% {
     r: 0;
   }
-  75.1%,
+  40.1%,
   100% {
     r: 9;
+  }
+}
+
+@keyframes bite-grow-4a {
+  0%,
+  56% {
+    r: 0;
+  }
+  56.1%,
+  100% {
+    r: 30;
+  }
+}
+@keyframes bite-grow-4b {
+  0%,
+  56% {
+    r: 0;
+  }
+  56.1%,
+  100% {
+    r: 20;
+  }
+}
+
+@keyframes bite-grow-5a {
+  0%,
+  72% {
+    r: 0;
+  }
+  72.1%,
+  100% {
+    r: 34;
+  }
+}
+@keyframes bite-grow-5b {
+  0%,
+  72% {
+    r: 0;
+  }
+  72.1%,
+  100% {
+    r: 22;
+  }
+}
+
+@keyframes bite-grow-6a {
+  0%,
+  88% {
+    r: 0;
+  }
+  88.1%,
+  100% {
+    r: 135;
+  }
+}
+@keyframes bite-grow-6b {
+  0%,
+  88% {
+    r: 0;
+  }
+  88.1%,
+  100% {
+    r: 95;
   }
 }
 
 /* Each bite's grow window is ~0.1% of the cycle (a few ms) so it reads as
    one abrupt chomp rather than growing smoothly into place. */
 .burger-bite-1a {
-  animation: bite-grow-1a 3.6s linear infinite;
+  animation: bite-grow-1a 6s linear infinite;
 }
 .burger-bite-1b {
-  animation: bite-grow-1b 3.6s linear infinite;
+  animation: bite-grow-1b 6s linear infinite;
 }
 .burger-bite-2a {
-  animation: bite-grow-2a 3.6s linear infinite;
+  animation: bite-grow-2a 6s linear infinite;
 }
 .burger-bite-2b {
-  animation: bite-grow-2b 3.6s linear infinite;
+  animation: bite-grow-2b 6s linear infinite;
 }
 .burger-bite-3a {
-  animation: bite-grow-3a 3.6s linear infinite;
+  animation: bite-grow-3a 6s linear infinite;
 }
 .burger-bite-3b {
-  animation: bite-grow-3b 3.6s linear infinite;
+  animation: bite-grow-3b 6s linear infinite;
+}
+.burger-bite-4a {
+  animation: bite-grow-4a 6s linear infinite;
+}
+.burger-bite-4b {
+  animation: bite-grow-4b 6s linear infinite;
+}
+.burger-bite-5a {
+  animation: bite-grow-5a 6s linear infinite;
+}
+.burger-bite-5b {
+  animation: bite-grow-5b 6s linear infinite;
+}
+.burger-bite-6a {
+  animation: bite-grow-6a 6s linear infinite;
+}
+.burger-bite-6b {
+  animation: bite-grow-6b 6s linear infinite;
 }
 
-/* One pair of crumbs falls right as each bite lands (~6%, ~39%, ~72%
-   into the shared 3.6s cycle) — keyframe selectors can't reference custom
-   properties, so each gets its own explicit keyframes. */
+/* One pair of crumbs falls right as each bite lands — keyframe selectors
+   can't reference custom properties, so each gets its own explicit
+   keyframes. */
 @keyframes crumb-fall-1 {
   0%,
-  6% {
+  5% {
     opacity: 0;
     transform: translate(0, 0);
   }
-  8% {
+  7% {
     opacity: 1;
     transform: translate(2px, 2px);
   }
-  20%,
+  17%,
   100% {
     opacity: 0;
     transform: translate(8px, 22px);
@@ -204,15 +287,15 @@ body {
 
 @keyframes crumb-fall-2 {
   0%,
-  8% {
+  7% {
     opacity: 0;
     transform: translate(0, 0);
   }
-  10% {
+  9% {
     opacity: 1;
     transform: translate(-2px, 2px);
   }
-  24%,
+  20%,
   100% {
     opacity: 0;
     transform: translate(-6px, 24px);
@@ -221,15 +304,15 @@ body {
 
 @keyframes crumb-fall-3 {
   0%,
-  39% {
+  21% {
     opacity: 0;
     transform: translate(0, 0);
   }
-  41% {
+  23% {
     opacity: 1;
     transform: translate(2px, 2px);
   }
-  53%,
+  33%,
   100% {
     opacity: 0;
     transform: translate(8px, 22px);
@@ -238,15 +321,15 @@ body {
 
 @keyframes crumb-fall-4 {
   0%,
-  41% {
+  23% {
     opacity: 0;
     transform: translate(0, 0);
   }
-  43% {
+  25% {
     opacity: 1;
     transform: translate(-2px, 2px);
   }
-  57%,
+  36%,
   100% {
     opacity: 0;
     transform: translate(-6px, 24px);
@@ -255,15 +338,15 @@ body {
 
 @keyframes crumb-fall-5 {
   0%,
-  72% {
+  37% {
     opacity: 0;
     transform: translate(0, 0);
   }
-  74% {
+  39% {
     opacity: 1;
     transform: translate(2px, 2px);
   }
-  86%,
+  49%,
   100% {
     opacity: 0;
     transform: translate(8px, 22px);
@@ -272,15 +355,117 @@ body {
 
 @keyframes crumb-fall-6 {
   0%,
-  74% {
+  39% {
     opacity: 0;
     transform: translate(0, 0);
   }
-  76% {
+  41% {
     opacity: 1;
     transform: translate(-2px, 2px);
   }
-  90%,
+  52%,
+  100% {
+    opacity: 0;
+    transform: translate(-6px, 24px);
+  }
+}
+
+@keyframes crumb-fall-7 {
+  0%,
+  53% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+  55% {
+    opacity: 1;
+    transform: translate(2px, 2px);
+  }
+  65%,
+  100% {
+    opacity: 0;
+    transform: translate(8px, 22px);
+  }
+}
+
+@keyframes crumb-fall-8 {
+  0%,
+  55% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+  57% {
+    opacity: 1;
+    transform: translate(-2px, 2px);
+  }
+  68%,
+  100% {
+    opacity: 0;
+    transform: translate(-6px, 24px);
+  }
+}
+
+@keyframes crumb-fall-9 {
+  0%,
+  69% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+  71% {
+    opacity: 1;
+    transform: translate(2px, 2px);
+  }
+  81%,
+  100% {
+    opacity: 0;
+    transform: translate(8px, 22px);
+  }
+}
+
+@keyframes crumb-fall-10 {
+  0%,
+  71% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+  73% {
+    opacity: 1;
+    transform: translate(-2px, 2px);
+  }
+  84%,
+  100% {
+    opacity: 0;
+    transform: translate(-6px, 24px);
+  }
+}
+
+@keyframes crumb-fall-11 {
+  0%,
+  85% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+  87% {
+    opacity: 1;
+    transform: translate(2px, 2px);
+  }
+  97%,
+  100% {
+    opacity: 0;
+    transform: translate(8px, 22px);
+  }
+}
+
+@keyframes crumb-fall-12 {
+  0%,
+  87% {
+    opacity: 0;
+    transform: translate(0, 0);
+  }
+  89% {
+    opacity: 1;
+    transform: translate(-2px, 2px);
+  }
+  99%,
   100% {
     opacity: 0;
     transform: translate(-6px, 24px);
@@ -292,27 +477,51 @@ body {
 }
 
 .burger-crumb-1 {
-  animation: crumb-fall-1 3.6s ease-in infinite;
+  animation: crumb-fall-1 6s ease-in infinite;
 }
 
 .burger-crumb-2 {
-  animation: crumb-fall-2 3.6s ease-in infinite;
+  animation: crumb-fall-2 6s ease-in infinite;
 }
 
 .burger-crumb-3 {
-  animation: crumb-fall-3 3.6s ease-in infinite;
+  animation: crumb-fall-3 6s ease-in infinite;
 }
 
 .burger-crumb-4 {
-  animation: crumb-fall-4 3.6s ease-in infinite;
+  animation: crumb-fall-4 6s ease-in infinite;
 }
 
 .burger-crumb-5 {
-  animation: crumb-fall-5 3.6s ease-in infinite;
+  animation: crumb-fall-5 6s ease-in infinite;
 }
 
 .burger-crumb-6 {
-  animation: crumb-fall-6 3.6s ease-in infinite;
+  animation: crumb-fall-6 6s ease-in infinite;
+}
+
+.burger-crumb-7 {
+  animation: crumb-fall-7 6s ease-in infinite;
+}
+
+.burger-crumb-8 {
+  animation: crumb-fall-8 6s ease-in infinite;
+}
+
+.burger-crumb-9 {
+  animation: crumb-fall-9 6s ease-in infinite;
+}
+
+.burger-crumb-10 {
+  animation: crumb-fall-10 6s ease-in infinite;
+}
+
+.burger-crumb-11 {
+  animation: crumb-fall-11 6s ease-in infinite;
+}
+
+.burger-crumb-12 {
+  animation: crumb-fall-12 6s ease-in infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -322,6 +531,12 @@ body {
   .burger-bite-2b,
   .burger-bite-3a,
   .burger-bite-3b,
+  .burger-bite-4a,
+  .burger-bite-4b,
+  .burger-bite-5a,
+  .burger-bite-5b,
+  .burger-bite-6a,
+  .burger-bite-6b,
   .burger-crumb {
     animation: none !important;
   }
@@ -343,6 +558,24 @@ body {
   }
   .burger-bite-3b {
     r: 9 !important;
+  }
+  .burger-bite-4a {
+    r: 30 !important;
+  }
+  .burger-bite-4b {
+    r: 20 !important;
+  }
+  .burger-bite-5a {
+    r: 34 !important;
+  }
+  .burger-bite-5b {
+    r: 22 !important;
+  }
+  .burger-bite-6a {
+    r: 135 !important;
+  }
+  .burger-bite-6b {
+    r: 95 !important;
   }
 }
 
